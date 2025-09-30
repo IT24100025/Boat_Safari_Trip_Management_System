@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trip Management - Boat Safari Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Boat Safari Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/staff">Staff</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/payments">Payments</a></li>
+                <li><a href="/maintenance">Maintenance</a></li>
+                <li><a href="/trips">Trips</a></li>
+                <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h2>Trip Management ⛵</h2>
+    <p>Monitor and manage scheduled boat trips. Cancel trips due to weather or emergencies.</p>
+
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Total Trips</h3>
+            <p th:text="${trips.size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Available</h3>
+            <p th:text="${trips.?[availability > 0].size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Scheduled</h3>
+            <p th:text="${trips.size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Capacity</h3>
+            <!-- FIXED: Use the totalAvailability calculated in controller -->
+            <p th:text="${totalAvailability} + ' seats'">0 seats</p>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Trip ID</th>
+            <th>Trip Name</th>
+            <th>Destination</th>
+            <th>Departure Time</th>
+            <th>Duration (min)</th>
+            <th>Availability</th>
+            <th>Base Price</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trip : ${trips}">
+            <td th:text="${trip.tripId}">1</td>
+            <td th:text="${trip.tripName}">Morning Safari</td>
+            <td>
+                <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                     th:text="${trip.destinations}"
+                     th:title="${trip.destinations}">
+                    Lake Victoria
+                </div>
+            </td>
+            <td th:text="${#temporals.format(trip.departureTime, 'yyyy-MM-dd HH:mm')}">2024-05-10 08:00</td>
+            <td th:text="${trip.duration}">120</td>
+            <td>
+                <span th:if="${trip.availability > 0}" class="status-completed" th:text="${trip.availability + ' seats'}">8 seats</span>
+                <span th:if="${trip.availability == 0}" class="status-cancelled">Full</span>
+            </td>
+            <td th:text="${'$' + #numbers.formatDecimal(trip.basePrice, 1, 2)}">$75.00</td>
+            <td>
+                <div style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                     th:text="${trip.description}"
+                     th:title="${trip.description}">
+                    Scenic boat tour around the lake
+                </div>
+            </td>
+            <td th:if="${trip.availability > 0}">
+                <form th:action="@{/trips/cancel/{id}(id=${trip.tripId})}" method="post" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" name="reason" placeholder="Cancellation reason" required style="font-size:0.9rem; padding:0.4rem; width:120px;">
+                    <button type="submit" class="btn btn-danger" style="padding:0.4rem 0.8rem;"
+                            onclick="return confirm('Cancel this trip? This will make it unavailable for booking.')">
+                        Cancel
+                    </button>
+                </form>
+            </td>
+            <td th:if="${trip.availability == 0}">
+                <span class="status-cancelled">Cancelled</span>
+            </td>
+        </tr>
+        <tr th:if="${trips.empty}">
+            <td colspan="9" style="text-align: center; padding: 3rem; color: var(--light-text);">
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;">⛵</div>
+                <h3>No Trips Scheduled</h3>
+                <p>Trips will appear here once they are scheduled in the system.</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                link.style.fontWeight = 'bold';
+            }
+        });
+    });
+</script>
+</body>
+</html>

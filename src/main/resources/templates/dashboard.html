@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Boat Safari Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/staff">Staff</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/payments">Payments</a></li>
+                <li><a href="/maintenance">Maintenance</a></li>
+                <li><a href="/trips">Trips</a></li>
+                <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h2>Welcome back, <span th:text="${user.firstName}">Admin</span>! 🌊</h2>
+    <p>Here's your operational overview for today.</p>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Staff</h3>
+            <p>15</p>
+        </div>
+        <div class="stat-card">
+            <h3>Active Trips</h3>
+            <p>8</p>
+        </div>
+        <div class="stat-card">
+            <h3>Revenue (Today)</h3>
+            <p>$2,450</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Maintenance</h3>
+            <p>3</p>
+        </div>
+        <div class="stat-card">
+            <h3>New Feedback</h3>
+            <p>12</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Payments</h3>
+            <p>5</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; text-align: center;">
+        <a href="/staff" class="btn btn-primary">Manage Staff</a>
+        <a href="/trips" class="btn btn-secondary">Manage Trips</a>
+        <a href="/maintenance" class="btn btn-outline">View Maintenance</a>
+        <a href="/payments" class="btn btn-success">Payment Records</a>
+        <a href="/feedback" class="btn btn-primary">Customer Feedback</a>
+    </div>
+
+    <div style="margin-top: 3rem; background: var(--card-bg); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <h3>Quick Actions</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <a href="/staff" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>👥 Add Staff</strong>
+            </a>
+            <a href="/trips" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>⛵ Schedule Trip</strong>
+            </a>
+            <a href="/maintenance" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>🔧 Log Maintenance</strong>
+            </a>
+            <a href="/feedback" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>📝 Review Feedback</strong>
+            </a>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                link.style.fontWeight = 'bold';
+            }
+        });
+    });
+</script>
+</body>
+</html>

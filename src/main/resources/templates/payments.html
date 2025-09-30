@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Records - Boat Safari Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Boat Safari Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/staff">Staff</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/payments">Payments</a></li>
+                <li><a href="/maintenance">Maintenance</a></li>
+                <li><a href="/trips">Trips</a></li>
+                <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h2>Payment Records 💳</h2>
+    <p>All customer payments and transaction history.</p>
+
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Total Payments</h3>
+            <p th:text="${payments.size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Revenue</h3>
+            <!-- FIXED: Simple approach -->
+            <p>$<span th:text="${#numbers.formatDecimal(totalAmount, 1, 2)}">0.00</span></p>
+        </div>
+        <div class="stat-card">
+            <h3>Successful</h3>
+            <p th:text="${payments.?[status == 'Successful'].size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <p th:text="${payments.?[status == 'Pending'].size()}">0</p>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Payment ID</th>
+            <th>Booking ID</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+            <th>Payment Method</th>
+            <th>Status</th>
+            <th>Transaction ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="payment : ${payments}">
+            <td th:text="${payment.paymentId}">1</td>
+            <td th:text="${payment.bookingId}">201</td>
+            <td>$<span th:text="${#numbers.formatDecimal(payment.amount, 1, 2)}">150.00</span></td>
+            <td th:text="${#temporals.format(payment.paymentDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 09:30</td>
+            <td th:text="${payment.paymentMethod}">Credit Card</td>
+            <td>
+                <span th:if="${payment.status == 'Successful'}" class="status-completed">Successful</span>
+                <span th:if="${payment.status == 'Pending'}" class="status-pending">Pending</span>
+                <span th:if="${payment.status == 'Failed'}" class="status-cancelled">Failed</span>
+                <span th:if="${payment.status == 'Refunded'}" style="color: #8b5cf6; font-weight: 600;">Refunded</span>
+            </td>
+            <td>
+                <code th:text="${payment.transactionId ?: 'N/A'}" style="font-family: monospace; font-size: 0.85rem;"></code>
+            </td>
+        </tr>
+        <tr th:if="${payments.empty}">
+            <td colspan="7" style="text-align: center; padding: 3rem; color: var(--light-text);">
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;">💳</div>
+                <h3>No Payment Records</h3>
+                <p>Payment records will appear here once customers make bookings and payments.</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                link.style.fontWeight = 'bold';
+            }
+        });
+    });
+</script>
+</body>
+</html>
