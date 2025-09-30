@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="assignment-box">
+    <h2>
+        Booking Details #<span th:text="${booking.bookingId}">[BookingId]</span>
+    </h2>
+
+    <ul>
+        <li>Customer ID: <span th:text="${booking.customerId}">-</span></li>
+        <li>Trip ID: <span th:text="${booking.tripId}">-</span></li>
+        <li>Guide:
+            <span th:text="${booking.guideId != null ? booking.guideId : 'Not assigned'}">
+          -
+        </span>
+        </li>
+        <li>Driver:
+            <span th:text="${booking.driverId != null ? booking.driverId : 'Not assigned'}">
+          -
+        </span>
+        </li>
+        <li>Boat:
+            <span th:text="${booking.assignedBoatId != null ? booking.assignedBoatId : 'Not assigned'}">
+          -
+        </span>
+        </li>
+    </ul>
+
+    <a th:href="@{'/bookings/' + ${booking.bookingId} + '/assign'}"
+       class="submit-btn">
+        Assign/Update Staff & Boat
+    </a>
+</div>
+</body>
+</html>

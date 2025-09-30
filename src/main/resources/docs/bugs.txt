@@ -1,0 +1,6 @@
+-bookingrepo
+    assignGuideAndDriver
+        change table BOOKING
+            add column GuideId, DriverId
+DONE
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assign Staff & Boat</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="assignment-box">
+    <h2>
+        Assign Staff &amp; Boat<br />
+        Booking # <span th:text="${booking.bookingId}">ID</span>
+    </h2>
+
+    <form th:action="@{'/bookings/' + ${booking.bookingId} + '/assign'}"
+          method="post">
+
+        <div class="form-field">
+            <label for="guide">Guide</label>
+            <select id="guide" name="guideId">
+                <option th:each="g : ${guides}"
+                        th:value="${g.staffId}"
+                        th:text="${g.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="driver">Driver</label>
+            <select id="driver" name="driverId">
+                <option th:each="d : ${drivers}"
+                        th:value="${d.staffId}"
+                        th:text="${d.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="boat">Boat</label>
+            <select id="boat" name="boatId">
+                <option th:each="b : ${boats}"
+                        th:value="${b.boatId}"
+                        th:text="${b.boatName}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            Assign Everything
+        </button>
+    </form>
+</div>
+</body>
+</html>

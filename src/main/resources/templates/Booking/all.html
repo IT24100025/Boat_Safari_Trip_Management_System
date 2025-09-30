@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:time="http://www.thymeleaf.org/extras/java8time">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>All Bookings</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <script th:src="@{/js/sortTable.js}" defer></script>
+</head>
+<body>
+<div class="assignment-box">
+    <h2>All Bookings</h2>
+    <table class="booking-table">
+        <thead>
+        <tr>
+            <th class="sortable">Booking ID</th>
+            <th class="sortable">Customer ID</th>
+            <th class="sortable">Trip ID</th>
+            <th class="sortable">Booking Time</th>
+            <th class="sortable">Guests</th>
+            <th class="sortable">Total Cost</th>
+            <th class="sortable">Status</th>
+            <th class="sortable">Guide ID</th>
+            <th class="sortable">Driver ID</th>
+            <th class="sortable">Boat ID</th>
+            <th class="sortable">Special Requests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="b : ${bookings}"
+            th:attr="data-href=@{/bookings/{id}/assign(id=${b.bookingId})}">
+            <td th:text="${b.bookingId}">1</td>
+            <td th:text="${b.customerId}">200</td>
+            <td th:text="${b.tripId}">300</td>
+            <td th:text="${#temporals.format(b.bookingDate, 'yyyy-MM-dd HH:mm')}">2025-09-28 11:00</td>
+            <td th:text="${b.noOfGuests}">4</td>
+            <td th:text="${b.tripPrice}">250.00</td>
+            <td th:text="${b.status}">Pending</td>
+            <td th:text="${b.guideId}">10</td>
+            <td th:text="${b.driverId}">12</td>
+            <td th:text="${b.assignedBoatId}">5</td>
+            <td th:text="${b.specialRequests}">None</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
