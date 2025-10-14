@@ -81,8 +81,6 @@ public class BookingController {
         return "Booking/all";    // resolves to all.html
     }
 
-
-
 }
 
 

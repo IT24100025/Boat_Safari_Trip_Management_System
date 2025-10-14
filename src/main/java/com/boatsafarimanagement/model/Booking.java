@@ -32,10 +32,10 @@ public class Booking {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public int getNoOfGuests() { return noOfGuests; }
+    public int getNumOfGuests() { return noOfGuests; }
     public void setNoOfGuests(int noOfGuests) { this.noOfGuests = noOfGuests; }
 
-    public BigDecimal getTripPrice() { return tripPrice; }
+    public BigDecimal getTotalPrice() { return tripPrice; }
     public void setTripPrice(BigDecimal tripPrice) { this.tripPrice = tripPrice; }
 
     public Integer getGuideId() { return guideId; }
@@ -44,7 +44,7 @@ public class Booking {
     public Integer getDriverId() { return driverId; }
     public void setDriverId(Integer driverId) { this.driverId = driverId; }
 
-    public Integer getAssignedBoatId() { return assignedBoatId; }
+    public Integer getBoatId() { return assignedBoatId; }
     public void setAssignedBoatId(Integer assignedBoatId) { this.assignedBoatId = assignedBoatId; }
 
     public String getSpecialRequests() { return SpecialRequests; }

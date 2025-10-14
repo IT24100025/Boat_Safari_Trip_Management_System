@@ -7,11 +7,13 @@
     <title>All Bookings</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
     <script th:src="@{/js/sortTable.js}" defer></script>
+    <script th:src="@{/js/rowClick.js}" defer></script>
+
 </head>
 <body>
 <div class="assignment-box">
     <h2>All Bookings</h2>
-    <table class="booking-table">
+    <table class="data-table sortable-table">
         <thead>
         <tr>
             <th class="sortable">Booking ID</th>
@@ -34,15 +36,14 @@
             <td th:text="${b.customerId}">200</td>
             <td th:text="${b.tripId}">300</td>
             <td th:text="${#temporals.format(b.bookingDate, 'yyyy-MM-dd HH:mm')}">2025-09-28 11:00</td>
-            <td th:text="${b.noOfGuests}">4</td>
-            <td th:text="${b.tripPrice}">250.00</td>
-            <td th:text="${b.status}">Pending</td>
+            <td th:text="${b.numOfGuests}">4</td>
+            <td th:text="${b.totalPrice}">250.00</td>
+            <td th:text="${b.status}" th:classappend="'status-' + ${b.status.toLowerCase()}">Pending</td>
             <td th:text="${b.guideId}">10</td>
             <td th:text="${b.driverId}">12</td>
-            <td th:text="${b.assignedBoatId}">5</td>
+            <td th:text="${b.boatId}">5</td>
             <td th:text="${b.specialRequests}">None</td>
         </tr>
-
         </tbody>
     </table>
 </div>
