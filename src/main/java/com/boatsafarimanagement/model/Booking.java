@@ -9,11 +9,11 @@ public class Booking {
     private int tripId;
     private LocalDateTime bookingDate;
     private String status;
-    private int noOfGuests;
-    private BigDecimal tripPrice;
+    private int numOfGuests;
+    private BigDecimal totalPrice;
     private Integer guideId;         // staff.Role = 'Guide'
     private Integer driverId;        // staff.Role = 'Driver'
-    private Integer assignedBoatId;
+    private Integer BoatId;
     private String SpecialRequests;// BoatId
 
     // Getters & setters
@@ -32,11 +32,11 @@ public class Booking {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public int getNumOfGuests() { return noOfGuests; }
-    public void setNoOfGuests(int noOfGuests) { this.noOfGuests = noOfGuests; }
+    public int getNumOfGuests() { return numOfGuests; }
+    public void setNumOfGuests(int numOfGuests) { this.numOfGuests = numOfGuests; }
 
-    public BigDecimal getTotalPrice() { return tripPrice; }
-    public void setTripPrice(BigDecimal tripPrice) { this.tripPrice = tripPrice; }
+    public BigDecimal getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
 
     public Integer getGuideId() { return guideId; }
     public void setGuideId(Integer guideId) { this.guideId = guideId; }
@@ -44,8 +44,8 @@ public class Booking {
     public Integer getDriverId() { return driverId; }
     public void setDriverId(Integer driverId) { this.driverId = driverId; }
 
-    public Integer getBoatId() { return assignedBoatId; }
-    public void setAssignedBoatId(Integer assignedBoatId) { this.assignedBoatId = assignedBoatId; }
+    public Integer getBoatId() { return BoatId; }
+    public void setBoatId(Integer BoatId) { this.BoatId = BoatId; }
 
     public String getSpecialRequests() { return SpecialRequests; }
     public void setSpecialRequests(String specialRequests) { SpecialRequests = specialRequests;}

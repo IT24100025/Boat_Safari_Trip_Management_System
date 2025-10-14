@@ -27,11 +27,11 @@ public class BookingRepository {
                     b.setTripId(rs.getInt("TripId"));
                     b.setBookingDate(rs.getTimestamp("BookingDate").toLocalDateTime());
                     b.setStatus(rs.getString("Status"));
-                    b.setNoOfGuests(rs.getInt("NumOfGuests"));
-                    b.setTripPrice(rs.getBigDecimal("TotalPrice"));
+                    b.setNumOfGuests(rs.getInt("NumOfGuests"));
+                    b.setTotalPrice(rs.getBigDecimal("TotalPrice"));
                     b.setGuideId((Integer) rs.getObject("GuideId"));
                     b.setDriverId((Integer) rs.getObject("DriverId"));
-                    b.setAssignedBoatId((Integer) rs.getObject("BoatId"));
+                    b.setBoatId((Integer) rs.getObject("BoatId"));
                     return b;
                 },
                 bookingId
