@@ -347,3 +347,115 @@ h2 {
         padding: 0 15px;
     }
 }
+/* ===== BOOKING DETAILS PAGE ===== */
+.details-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    max-width: 700px;
+    margin: 2rem auto;
+    border-left: 6px solid var(--primary);
+}
+
+.details-card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark-text);
+}
+
+.details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.details-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: var(--dark-text);
+}
+
+.details-list li:last-child {
+    border-bottom: none;
+}
+
+.details-list strong {
+    font-weight: 600;
+    color: var(--light-text);
+    margin-right: 1rem;
+    flex-shrink: 0;
+    width: 140px;
+}
+
+.details-list span {
+    flex-grow: 1;
+    text-align: right;
+    font-weight: 500;
+}
+
+/* Back link button */
+.back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .details-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .details-list strong,
+    .details-list span {
+        width: 100%;
+        text-align: left;
+    }
+
+    .details-card {
+        padding: 1.5rem;
+    }
+}
+/* Center the details card */
+.details-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+}
+
+/* Make back link look like a button */
+.back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.3s ease;
+}
+
+.back-link:hover {
+    background: var(--primary-dark);
+}
