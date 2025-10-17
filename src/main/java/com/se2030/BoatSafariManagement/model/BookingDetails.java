@@ -1,8 +1,8 @@
-package com.boatsafarimanagement.model;
+package com.se2030.BoatSafariManagement.model;
 
-//import com.boatsafarimanagement.model.Boat;
-//import com.boatsafarimanagement.model.Booking;
-//import com.boatsafarimanagement.model.Staff;
+//import com.se2030.BoatSafariManagement.model.Boat;
+//import com.se2030.BoatSafariManagement.model.Booking;
+//import com.se2030.BoatSafariManagement.model.Staff;
 //import com.boatsafarimanagement.model.User;
 //import com.boatsafarimanagement.model.Trip;
 

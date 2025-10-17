@@ -1,4 +1,4 @@
-package com.boatsafarimanagement;
+package com.se2030.BoatSafariManagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

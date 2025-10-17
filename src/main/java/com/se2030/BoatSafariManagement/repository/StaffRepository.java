@@ -1,6 +1,6 @@
-package com.boatsafarimanagement.repository;
+package com.se2030.BoatSafariManagement.repository;
 
-import com.boatsafarimanagement.model.Staff;
+import com.se2030.BoatSafariManagement.model.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

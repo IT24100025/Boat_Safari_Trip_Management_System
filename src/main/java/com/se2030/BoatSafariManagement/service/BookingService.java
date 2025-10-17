@@ -1,10 +1,10 @@
-package com.boatsafarimanagement.service;
+package com.se2030.BoatSafariManagement.service;
 
-import com.boatsafarimanagement.model.Boat;
-import com.boatsafarimanagement.model.Booking;
-import com.boatsafarimanagement.model.BookingDetails;
-import com.boatsafarimanagement.model.Staff;
-import com.boatsafarimanagement.repository.BookingRepository;
+import com.se2030.BoatSafariManagement.model.Boat;
+import com.se2030.BoatSafariManagement.model.Booking;
+import com.se2030.BoatSafariManagement.model.BookingDetails;
+import com.se2030.BoatSafariManagement.model.Staff;
+import com.se2030.BoatSafariManagement.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,12 @@
-package com.boatsafarimanagement.controller;
+package com.se2030.BoatSafariManagement.controller;
 
-import com.boatsafarimanagement.model.BookingDetails;
-import com.boatsafarimanagement.service.StaffService;
+import com.se2030.BoatSafariManagement.model.BookingDetails;
+import com.se2030.BoatSafariManagement.service.StaffService;
 import org.springframework.ui.Model;
-import com.boatsafarimanagement.model.Boat;
-import com.boatsafarimanagement.model.Booking;
-import com.boatsafarimanagement.model.Staff;
-import com.boatsafarimanagement.service.BookingService;
+import com.se2030.BoatSafariManagement.model.Boat;
+import com.se2030.BoatSafariManagement.model.Booking;
+import com.se2030.BoatSafariManagement.model.Staff;
+import com.se2030.BoatSafariManagement.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
