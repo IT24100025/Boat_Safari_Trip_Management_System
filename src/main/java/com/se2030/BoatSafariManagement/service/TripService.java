@@ -20,4 +20,9 @@ public class TripService {
     public void cancelTrip(int id, String reason) {
         tripRepository.cancelTrip(id, reason);
     }
+
+    // New method to delete trip
+    public void deleteTrip(int id) {
+        tripRepository.deleteTrip(id);
+    }
 }

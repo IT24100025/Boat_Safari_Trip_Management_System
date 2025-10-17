@@ -1,7 +1,7 @@
 package com.se2030.BoatSafariManagement.controller;
 
 import com.se2030.BoatSafariManagement.model.User;
-import com.se2030.BoatSafariManagement.model.Trip; // Make sure to import Trip model
+import com.se2030.BoatSafariManagement.model.Trip;
 import com.se2030.BoatSafariManagement.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +24,9 @@ public class TripController {
         java.util.List<Trip> trips = tripService.getAllTrips();
         model.addAttribute("trips", trips);
 
-        // Calculate total availability
+        // Calculate total availability (only for active trips)
         int totalAvailability = trips.stream()
+                .filter(trip -> trip.getAvailability() > 0) // Only count positive availability
                 .mapToInt(Trip::getAvailability)
                 .sum();
         model.addAttribute("totalAvailability", totalAvailability);
@@ -36,6 +37,13 @@ public class TripController {
     @PostMapping("/trips/cancel/{id}")
     public String cancelTrip(@PathVariable int id, @RequestParam String reason) {
         tripService.cancelTrip(id, reason);
+        return "redirect:/trips";
+    }
+
+    // New endpoint to delete trip
+    @PostMapping("/trips/delete/{id}")
+    public String deleteTrip(@PathVariable int id) {
+        tripService.deleteTrip(id);
         return "redirect:/trips";
     }
 }

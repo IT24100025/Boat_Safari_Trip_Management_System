@@ -27,6 +27,47 @@
     <h2>Boat Maintenance Logs 🔧</h2>
     <p>Track and update maintenance status for all boats in the fleet.</p>
 
+    <!-- Add Maintenance Form -->
+    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 2rem;">
+        <h3>Report New Maintenance Issue</h3>
+        <form th:action="@{/maintenance/add}" method="post" id="maintenanceForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+
+            <!-- UPDATED: Boat Selection Dropdown -->
+            <div class="input-group">
+                <label>Select Boat *</label>
+                <select name="boatId" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <option value="">Select a Boat</option>
+                    <option th:each="boat : ${availableBoats}"
+                            th:value="${boat.BoatId}"
+                            th:text="${boat.BoatName + ' (' + boat.BoatType + ' - Capacity: ' + boat.Capacity + ')'}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Issue Description *</label>
+                <textarea name="issueDescription" placeholder="Describe the maintenance issue..." required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; resize: vertical;" rows="3"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Estimated Cost ($)</label>
+                <input type="number" step="0.01" name="cost" placeholder="0.00" min="0">
+            </div>
+            <div class="input-group">
+                <label>Status *</label>
+                <select name="status" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <option value="">Select Status</option>
+                    <option value="Reported">Reported</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+            <input type="hidden" name="reportedByAdminId" th:value="${currentAdminId}">
+            <div style="grid-column: 1 / -1;">
+                <button type="submit" class="btn btn-primary">Submit Maintenance Report</button>
+            </div>
+        </form>
+    </div>
+
     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
         <div class="stat-card">
             <h3>Total Logs</h3>
@@ -57,7 +98,7 @@
             <th>Date Resolved</th>
             <th>Cost</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -72,9 +113,9 @@
                     Engine oil leak
                 </div>
             </td>
-            <td th:text="${#temporals.format(maintenance.dateReported, 'yyyy-MM-dd')}">2024-04-28</td>
+            <td th:text="${#temporals.format(maintenance.dateReported, 'yyyy-MM-dd HH:mm')}">2024-04-28</td>
             <td>
-                <span th:if="${maintenance.dateResolved}" th:text="${#temporals.format(maintenance.dateResolved, 'yyyy-MM-dd')}">2024-04-30</span>
+                <span th:if="${maintenance.dateResolved}" th:text="${#temporals.format(maintenance.dateResolved, 'yyyy-MM-dd HH:mm')}">2024-04-30</span>
                 <span th:if="${maintenance.dateResolved == null}" style="color: var(--light-text);">-</span>
             </td>
             <td th:text="${maintenance.cost != null ? '$' + #numbers.formatDecimal(maintenance.cost, 1, 2) : '$0.00'}">$250.00</td>
@@ -117,6 +158,34 @@
                 link.style.fontWeight = 'bold';
             }
         });
+
+        // Form validation for maintenance form
+        const maintenanceForm = document.getElementById('maintenanceForm');
+        if (maintenanceForm) {
+            maintenanceForm.addEventListener('submit', function(e) {
+                const boatId = document.querySelector('select[name="boatId"]').value;
+                const issueDescription = document.querySelector('textarea[name="issueDescription"]').value;
+                const status = document.querySelector('select[name="status"]').value;
+
+                if (!boatId || !issueDescription.trim() || !status) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields (Boat, Issue Description, and Status).');
+                    return false;
+                }
+            });
+        }
+
+        // Auto-fill current date for resolved issues
+        const statusSelect = document.querySelector('select[name="status"]');
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function() {
+                if (this.value === 'Resolved') {
+                    if (!confirm('Marking as Resolved will set the resolution date to now. Continue?')) {
+                        this.value = '';
+                    }
+                }
+            });
+        }
     });
 </script>
 </body>

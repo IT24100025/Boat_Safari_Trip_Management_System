@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.time.LocalDateTime;
@@ -47,5 +49,17 @@ public class FeedbackController {
                 .count();
         model.addAttribute("recentFeedbackCount", recentFeedbackCount);
         return "feedback";
+    }
+
+    // New method to delete feedback
+    @PostMapping("/feedback/delete/{id}")
+    public String deleteFeedback(@SessionAttribute(name = "user", required = false) User user,
+                                 @PathVariable int id) {
+        if (user == null || !"Admin".equals(user.getRole())) {
+            return "redirect:/login";
+        }
+
+        feedbackService.deleteFeedback(id);
+        return "redirect:/feedback";
     }
 }

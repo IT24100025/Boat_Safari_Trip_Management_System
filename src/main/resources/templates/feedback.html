@@ -17,6 +17,7 @@
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
                 <li><a href="/trips">Trips</a></li>
+                <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
         </nav>
@@ -25,7 +26,7 @@
 
 <main>
     <h2>Customer Feedback 💬</h2>
-    <p>Customer reviews and ratings for boat safari experiences.</p>
+    <p>Customer reviews and ratings for boat safari experiences. Delete inappropriate feedback when necessary.</p>
 
     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
         <div class="stat-card">
@@ -57,6 +58,7 @@
             <th>Rating</th>
             <th>Comment</th>
             <th>Submitted Date</th>
+            <th>Actions</th> <!-- NEW: Added Actions column -->
         </tr>
         </thead>
         <tbody>
@@ -79,9 +81,18 @@
                 </div>
             </td>
             <td th:text="${#temporals.format(feedback.submittedDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 14:30</td>
+            <td>
+                <!-- NEW: Delete button for each feedback -->
+                <form th:action="@{/feedback/delete/{id}(id=${feedback.feedbackId})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.85rem;"
+                            onclick="return confirm('Are you sure you want to delete this feedback? This action cannot be undone.')">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
         <tr th:if="${feedbacks.empty}">
-            <td colspan="7" style="text-align: center; padding: 3rem; color: var(--light-text);">
+            <td colspan="8" style="text-align: center; padding: 3rem; color: var(--light-text);">
                 <div style="font-size: 1.5rem; margin-bottom: 1rem;">💬</div>
                 <h3>No Feedback Yet</h3>
                 <p>Customer feedback will appear here once they submit reviews for their trips.</p>
@@ -102,6 +113,16 @@
                 link.style.backgroundColor = 'rgba(255,255,255,0.3)';
                 link.style.fontWeight = 'bold';
             }
+        });
+
+        // Confirm deletion for all delete buttons
+        const deleteForms = document.querySelectorAll('form[action*="/feedback/delete"]');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) {
+                    e.preventDefault();
+                }
+            });
         });
     });
 </script>

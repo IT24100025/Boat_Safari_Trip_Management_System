@@ -86,6 +86,8 @@
                     Scenic boat tour around the lake
                 </div>
             </td>
+
+            <!-- UPDATED: Actions column with only Cancel button -->
             <td th:if="${trip.availability > 0}">
                 <form th:action="@{/trips/cancel/{id}(id=${trip.tripId})}" method="post" style="display: flex; gap: 0.5rem; align-items: center;">
                     <input type="text" name="reason" placeholder="Cancellation reason" required style="font-size:0.9rem; padding:0.4rem; width:120px;">

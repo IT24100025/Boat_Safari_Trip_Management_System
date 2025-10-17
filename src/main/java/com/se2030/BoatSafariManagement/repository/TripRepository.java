@@ -32,13 +32,28 @@ public class TripRepository {
     };
 
     public List<Trip> findAll() {
-        String sql = "SELECT * FROM Trip ORDER BY DepartureTime DESC";
+        // Show only active and cancelled trips, exclude deleted trips
+        String sql = "SELECT * FROM Trip WHERE Description NOT LIKE '%[DELETED%' ORDER BY DepartureTime DESC";
         return jdbcTemplate.query(sql, tripRowMapper);
     }
 
     public void cancelTrip(int id, String reason) {
-        // Update availability to 0 and potentially add cancellation reason
-        String sql = "UPDATE Trip SET Availability = 0, Description = CONCAT(Description, ?) WHERE TripId = ?";
+        String sql = "UPDATE Trip SET Availability = 0, Description = CONCAT(COALESCE(Description, ''), ?) WHERE TripId = ?";
         jdbcTemplate.update(sql, " [CANCELLED: " + reason + "]", id);
+    }
+
+    public void deleteTrip(int id) {
+        String checkBookingsSql = "SELECT COUNT(*) FROM Booking WHERE TripId = ?";
+        Integer bookingCount = jdbcTemplate.queryForObject(checkBookingsSql, Integer.class, id);
+
+        if (bookingCount != null && bookingCount > 0) {
+            // Soft delete - mark as deleted in description
+            String softDeleteSql = "UPDATE Trip SET Description = CONCAT(COALESCE(Description, ''), ?) WHERE TripId = ?";
+            jdbcTemplate.update(softDeleteSql, " [DELETED]", id);
+        } else {
+            // Hard delete - remove from database
+            jdbcTemplate.update("UPDATE Boat SET TripId = NULL WHERE TripId = ?", id);
+            jdbcTemplate.update("DELETE FROM Trip WHERE TripId = ?", id);
+        }
     }
 }

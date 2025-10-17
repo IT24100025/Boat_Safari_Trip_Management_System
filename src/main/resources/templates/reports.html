@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Reports - Boat Safari Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Boat Safari Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/staff">Staff</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/payments">Payments</a></li>
+                <li><a href="/maintenance">Maintenance</a></li>
+                <li><a href="/trips">Trips</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h2>Generate Reports 📊</h2>
+    <p>Generate detailed business performance reports in CSV format.</p>
+
+    <!-- Report Generation Form -->
+    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 2rem;">
+        <h3>Report Configuration</h3>
+        <form th:action="@{/reports/generate}" method="post" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div class="input-group">
+                <label>Report Type *</label>
+                <select name="reportType" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <option value="">Select Report Type</option>
+                    <option value="business">Business Performance</option>
+                    <option value="financial">Financial Report</option>
+                    <option value="maintenance">Maintenance Report</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Start Date *</label>
+                <input type="date" name="startDate" th:value="${startDate}" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
+            </div>
+            <div class="input-group">
+                <label>End Date *</label>
+                <input type="date" name="endDate" th:value="${endDate}" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
+            </div>
+            <div style="grid-column: 1 / -1; display: flex; gap: 1rem; justify-content: flex-start;">
+                <button type="submit" class="btn btn-primary">Generate Preview</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Report Preview Section -->
+    <div th:if="${generated}" style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 2rem;">
+        <h3 th:text="${reportTitle + ' Preview'}">Report Preview</h3>
+        <p>Period: <span th:text="${startDate + ' to ' + endDate}"></span></p>
+
+        <!-- Export Button - SIMPLIFIED: Single CSV Export -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+            <form th:action="@{/reports/export}" method="post" style="display: inline;">
+                <input type="hidden" name="reportType" th:value="${reportType}">
+                <input type="hidden" name="startDate" th:value="${startDate}">
+                <input type="hidden" name="endDate" th:value="${endDate}">
+                <input type="hidden" name="format" value="csv">
+                <button type="submit" class="btn btn-success">
+                    📊 Export as CSV
+                </button>
+            </form>
+        </div>
+
+        <!-- Report Data Table -->
+        <table class="data-table" th:if="${not reportData.empty}">
+            <thead>
+            <tr>
+                <th th:each="header : ${reportData[0].keySet()}" th:text="${header}">Column</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row : ${reportData}">
+                <td th:each="value : ${row.values()}" th:text="${value}">Data</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${reportData.empty}" style="text-align: center; padding: 2rem; color: var(--light-text);">
+            <p>No data found for the selected period and report type.</p>
+        </div>
+    </div>
+
+    <!-- Report Types Information -->
+    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <h3>Available Reports</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <div style="padding: 1rem; border-left: 4px solid var(--primary); background: #f8fafc;">
+                <h4>📈 Business Performance</h4>
+                <p style="color: var(--light-text); margin: 0.5rem 0 0 0;">
+                    Trip bookings, revenue, and customer ratings analysis.
+                </p>
+            </div>
+            <div style="padding: 1rem; border-left: 4px solid var(--success); background: #f8fafc;">
+                <h4>💰 Financial Report</h4>
+                <p style="color: var(--light-text); margin: 0.5rem 0 0 0;">
+                    Payment transactions, revenue breakdown, and financial summary.
+                </p>
+            </div>
+            <div style="padding: 1rem; border-left: 4px solid var(--accent); background: #f8fafc;">
+                <h4>🔧 Maintenance Report</h4>
+                <p style="color: var(--light-text); margin: 0.5rem 0 0 0;">
+                    Boat maintenance logs, costs, and repair status overview.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                link.style.fontWeight = 'bold';
+            }
+        });
+
+        // Set max date to today for end date
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="endDate"]').max = today;
+        document.querySelector('input[name="startDate"]').max = today;
+    });
+</script>
+</body>
+</html>

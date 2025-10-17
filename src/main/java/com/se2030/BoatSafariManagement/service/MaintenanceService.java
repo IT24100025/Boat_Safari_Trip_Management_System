@@ -17,6 +17,10 @@ public class MaintenanceService {
         return maintenanceRepository.findAll();
     }
 
+    public void addMaintenanceLog(MaintenanceLog maintenanceLog) {
+        maintenanceRepository.save(maintenanceLog);
+    }
+
     public void updateMaintenanceStatus(int id, String status) {
         maintenanceRepository.updateStatus(id, status);
     }

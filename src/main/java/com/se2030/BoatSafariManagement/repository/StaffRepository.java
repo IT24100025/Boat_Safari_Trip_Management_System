@@ -35,7 +35,8 @@ public class StaffRepository {
     public List<Staff> findAllStaffWithUserDetails() {
         String sql = "SELECT s.StaffId, u.FirstName, u.LastName, u.Email," +
                 "s.Salary, s.LaneNumber, s.City, s.Availability, u.Role " +
-                "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId";
+                "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId " +
+                "WHERE u.Role != 'Deleted'"; // Exclude deleted staff
         return jdbcTemplate.query(sql, staffRowMapper);
     }
 
@@ -43,7 +44,7 @@ public class StaffRepository {
         try {
             String sql = "SELECT s.StaffId, u.FirstName, u.LastName, u.Email," +
                     "s.Salary, s.LaneNumber, s.City, s.Availability, u.Role " +
-                    "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId WHERE s.StaffId = ?";
+                    "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId WHERE s.StaffId = ? AND u.Role != 'Deleted'";
             return jdbcTemplate.queryForObject(sql, staffRowMapper, id);
         } catch (Exception e) {
             return null;
@@ -91,8 +92,17 @@ public class StaffRepository {
     }
 
     public void deleteStaff(int id) {
-        // Delete from Staff table (User will be deleted due to CASCADE)
+        // First delete from specialized staff tables if they exist
+        jdbcTemplate.update("DELETE FROM OperationsManager WHERE OperationsManagerId = ?", id);
+        jdbcTemplate.update("DELETE FROM BookingOfficer WHERE BookingOfficerId = ?", id);
+        jdbcTemplate.update("DELETE FROM BoatOwner WHERE BoatOwnerId = ?", id);
+        jdbcTemplate.update("DELETE FROM SystemAdmin WHERE AdminId = ?", id);
+
+        // Then delete from Staff table
         jdbcTemplate.update("DELETE FROM Staff WHERE StaffId = ?", id);
+
+        // Finally delete from User table
+        jdbcTemplate.update("DELETE FROM [User] WHERE UserId = ?", id);
     }
 
     public int getLastInsertedUserId() {
