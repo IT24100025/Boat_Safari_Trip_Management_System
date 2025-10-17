@@ -3,6 +3,7 @@ package com.boatsafarimanagement.repository;
 import com.boatsafarimanagement.model.Boat;
 import com.boatsafarimanagement.model.Booking;
 import com.boatsafarimanagement.model.Staff;
+import com.boatsafarimanagement.model.BookingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +20,7 @@ public class BookingRepository {
     public Booking getBooking(int bookingId) {
         return jdbc.queryForObject(
                 "SELECT BookingId, CustomerId, TripId, BookingDate, Status, NumOfGuests, TotalPrice, " +
-                        "GuideId, DriverId, BoatId FROM Booking WHERE BookingId = ?",
+                        "GuideId, DriverId, BoatId, SpecialRequests FROM Booking WHERE BookingId = ?",
                 (rs, rowNum) -> {
                     Booking b = new Booking();
                     b.setBookingId(rs.getInt("BookingId"));
@@ -32,6 +33,7 @@ public class BookingRepository {
                     b.setGuideId((Integer) rs.getObject("GuideId"));
                     b.setDriverId((Integer) rs.getObject("DriverId"));
                     b.setBoatId((Integer) rs.getObject("BoatId"));
+                    b.setSpecialRequests(rs.getString("SpecialRequests"));
                     return b;
                 },
                 bookingId
@@ -72,20 +74,31 @@ public class BookingRepository {
     }
 
     //get all bookings
-    public List<Booking> getAllBookings() {
+    public List<BookingDetails> getAllBookings() {
         return jdbc.query(
-                "SELECT BookingId," +
-                        "CustomerId," +
-                        "TripId," +
-                        "BookingDate," +
-                        "NumOfGuests," +
-                        "TotalPrice," +
-                        "Status," +
-                        "GuideId," +
-                        "DriverId," +
-                        "BoatId," +
-                        "SpecialRequests FROM Booking",
-                new BeanPropertyRowMapper<>(Booking.class)
+                "SELECT" +
+                        "    b.bookingId," +
+                        "    b.CustomerId," +
+                        "    t.TripName," +
+                        "    b.BookingDate," +
+                        "    b.NumOfGuests," +
+                        "    b.TotalPrice," +
+                        "    b.Status," +
+                        "    g.FirstName as GuideName," +
+                        "    d.FirstName as DriverName," +
+                        "    bt.BoatName," +
+                        "    b.SpecialRequests " +
+                        "FROM" +
+                        "    booking b" +
+                        "        LEFT OUTER JOIN " +
+                        "    [User] d ON b.DriverId = d.UserId" +
+                        "        LEFT OUTER JOIN" +
+                        "    [User] g ON b.GuideId = g.UserId" +
+                        "        LEFT OUTER JOIN" +
+                        "    Boat bt ON b.BoatId = bt.BoatId" +
+                        "        JOIN" +
+                        "    Trip t ON b.TripId = t.TripId;",
+                new BeanPropertyRowMapper<>(BookingDetails.class)
         );
     }
 

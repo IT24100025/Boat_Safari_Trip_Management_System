@@ -1,5 +1,6 @@
 package com.boatsafarimanagement.controller;
 
+import com.boatsafarimanagement.model.BookingDetails;
 import com.boatsafarimanagement.service.StaffService;
 import org.springframework.ui.Model;
 import com.boatsafarimanagement.model.Boat;
@@ -76,7 +77,7 @@ public class BookingController {
     // List all bookings
     @GetMapping("/all")
     public String listAllBookings(Model model) {
-        List<Booking> bookings = bookingService.getAllBookings();
+        List<BookingDetails> bookings = bookingService.getAllBookings();
         model.addAttribute("bookings", bookings);
         return "Booking/all";    // resolves to all.html
     }

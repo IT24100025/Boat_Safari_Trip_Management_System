@@ -2,6 +2,7 @@ package com.boatsafarimanagement.service;
 
 import com.boatsafarimanagement.model.Boat;
 import com.boatsafarimanagement.model.Booking;
+import com.boatsafarimanagement.model.BookingDetails;
 import com.boatsafarimanagement.model.Staff;
 import com.boatsafarimanagement.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class BookingService {
         repo.assignGuideAndDriver(bookingId, guideId, driverId);
     }
 
-    public List<Booking> getAllBookings() {
+    public List<BookingDetails> getAllBookings() {
         return repo.getAllBookings();
     }
 
