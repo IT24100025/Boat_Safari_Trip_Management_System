@@ -77,7 +77,7 @@ public class BookingRepository {
     public List<BookingDetails> getAllBookings() {
         return jdbc.query(
                 "SELECT" +
-                        "    b.bookingId," +
+                        "    b.BookingId," +
                         "    b.CustomerId," +
                         "    t.TripName," +
                         "    b.BookingDate," +

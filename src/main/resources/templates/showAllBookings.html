@@ -15,8 +15,8 @@
     <nav class="nav-bar">
         <ul class="nav-list">
             <li><a th:href="@{/home}">Home</a></li>
-            <li><a th:href="@{/bookings/all}" class="active">All Bookings</a></li>
-            <li><a th:href="@{/bookings/new}">New Booking</a></li>
+            <li><a th:href="@{/showAllBookings}" class="active">All Bookings</a></li>
+            <li><a th:href="@{/new}">New Booking</a></li>
             <li><a th:href="@{/staff}">Staff</a></li>
             <li><a th:href="@{/boats}">Boats</a></li>
         </ul>
@@ -47,8 +47,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="b : ${bookings}"
-                th:attr="data-href=@{/bookings/{id}/assign(id=${b.bookingId})}">
+            <tr th:each="b : ${bookingDetails}"
+                th:attr="data-href=@{/{id}/assignStaff(id=${b.bookingId})}">
                 <td th:text="${b.bookingId}">1</td>
                 <td th:text="${b.customerId}">200</td>
                 <td th:text="${b.tripName}">300</td>

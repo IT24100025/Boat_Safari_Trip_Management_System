@@ -14,10 +14,10 @@
             Booking # <span th:text="${booking.bookingId}">ID</span>
         </h2>
 
-        <form th:action="@{'/bookings/' + ${booking.bookingId} + '/assign'}"
-              method="post">
+        <form th:action="@{'/' + ${booking.bookingId} + '/assignStaff'}" method="post">
 
-            <div class="input-group">
+
+        <div class="input-group">
                 <label for="guide">Guide</label>
                 <select id="guide" name="guideId">
                     <option th:each="g : ${guides}"

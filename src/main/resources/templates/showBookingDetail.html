@@ -26,13 +26,13 @@
         </span>
         </li>
         <li>Boat:
-            <span th:text="${booking.assignedBoatId != null ? booking.assignedBoatId : 'Not assigned'}">
+            <span th:text="${booking.BoatId != null ? booking.BoatId : 'Not assigned'}">
           -
         </span>
         </li>
     </ul>
 
-    <a th:href="@{'/bookings/' + ${booking.bookingId} + '/assign'}"
+    <a th:href="@{/showAllBookings}"
        class="submit-btn">
         Assign/Update Staff & Boat
     </a>

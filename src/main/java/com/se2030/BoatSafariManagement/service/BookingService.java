@@ -12,8 +12,11 @@ import java.util.List;
 
 @Service
 public class BookingService {
-    @Autowired
-    private BookingRepository repo;
+    private final BookingRepository repo;
+
+    public BookingService(BookingRepository repo) {
+        this.repo = repo;
+    }
 
     public Booking getBooking(int id) {
         return repo.getBooking(id);

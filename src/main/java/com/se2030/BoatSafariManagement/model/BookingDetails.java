@@ -32,7 +32,7 @@ public class BookingDetails {
     public int getBookingId() {
         return bookingId;
     }
-    public void setBooking(int bookingId) {
+    public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
     public int getCustomerId() {
