@@ -4,7 +4,7 @@ A comprehensive web-based system designed to streamline and automate boat safari
 # Project Overview
 This system provides an integrated platform for managing all aspects of boat safari operations, including online bookings, staff scheduling, payment processing, and customer feedback. It serves multiple user roles to ensure smooth coordination between customers, staff, and administrators.
 
-Core Functionalities/n
+* Core Functionalities
 
 Online Booking Management - Real-time trip reservations with instant confirmations
 Trip Schedule Management - Conflict-free scheduling with calendar views
@@ -13,7 +13,7 @@ Customer Feedback System - Rating and review collection with analytics
 Salary & Work Management - Automated payroll and attendance tracking
 Admin Dashboard - Comprehensive business intelligence and reporting
 
-Technology Stack
+* Technology Stack
 
 Frontend: HTML, CSS, JavaScript (Responsive Web Design)
 Backend: Java
