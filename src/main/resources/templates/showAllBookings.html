@@ -12,7 +12,7 @@
 <body>
 <!-- Header with navigation and clock -->
 <header class="page-header">
-    <nav class="nav-bar">
+    <nav class="nav a">
         <ul class="nav-list">
             <li><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/showAllBookings}" class="active">All Bookings</a></li>
@@ -27,8 +27,14 @@
     </div>
 </header>
 
+
 <!-- Main content area -->
 <main class="container">
+    <div class="summary-card">
+        <h2>Bookings Made Today</h2>
+        <p th:text="${todayBookingCount}">0</p>
+    </div>
+
     <div class="table-container">
         <table class="data-table sortable-table" data-clickable>
             <thead>
@@ -40,9 +46,9 @@
                 <th class="sortable">Guests</th>
                 <th class="sortable">Total Cost</th>
                 <th class="sortable">Status</th>
-                <th class="sortable">Guide ID</th>
-                <th class="sortable">Driver ID</th>
-                <th class="sortable">Boat ID</th>
+                <th class="sortable">Guide Name</th>
+                <th class="sortable">Driver Name</th>
+                <th class="sortable">Boat Name</th>
                 <th class="sortable">Special Requests</th>
             </tr>
             </thead>

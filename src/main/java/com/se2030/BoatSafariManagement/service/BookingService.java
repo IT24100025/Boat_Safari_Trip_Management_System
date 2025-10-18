@@ -50,5 +50,8 @@ public class BookingService {
     public void updateAvailability(int guideId, int driverId, int boatID){
         repo.updateAvailability(guideId, driverId, boatID);
     }
+    public int getTodayBookingCount(){
+        return repo.getTodayBookingCount();
+    }
 }
 

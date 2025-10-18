@@ -20,8 +20,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @Autowired
-    public BookingController(BookingService bookingService,
-                             StaffService staffService) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
@@ -72,7 +71,10 @@ public class BookingController {
     @GetMapping("/showAllBookings")
     public String listAllBookings(Model model) {
         List<BookingDetails> bookingDetails = bookingService.getAllBookings();
+        int todayBookingCount = bookingService.getTodayBookingCount();
+
         model.addAttribute("bookingDetails", bookingDetails);
+        model.addAttribute("todayBookingCount", todayBookingCount);
         return "showAllBookings";    // resolves to showAllBookings.html
     }
 

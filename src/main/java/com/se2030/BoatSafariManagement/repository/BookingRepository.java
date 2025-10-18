@@ -84,8 +84,8 @@ public class BookingRepository {
                         "    b.NumOfGuests," +
                         "    b.TotalPrice," +
                         "    b.Status," +
-                        "    g.FirstName as GuideName," +
-                        "    d.FirstName as DriverName," +
+                        "    g.FirstName + ' ' + g.LastName as GuideName," +
+                        "    d.FirstName + ' ' + d.LastName as DriverName," +
                         "    bt.BoatName," +
                         "    b.SpecialRequests " +
                         "FROM" +
@@ -130,6 +130,12 @@ public class BookingRepository {
                 boatId, bookingId
         );
     }
+
+    public int getTodayBookingCount() {
+        String sql = "SELECT COUNT(*) FROM booking WHERE CAST(BookingDate AS DATE) = CAST(GETDATE() AS DATE)";
+        return jdbc.queryForObject(sql, Integer.class);
+    }
+
 
 }
 
