@@ -7,16 +7,27 @@ This system provides an integrated platform for managing all aspects of boat saf
 * Core Functionalities
 
 Online Booking Management - Real-time trip reservations with instant confirmations
+
 Trip Schedule Management - Conflict-free scheduling with calendar views
+
 Staff Assignment & Availability - Efficient workforce coordination
+
 Customer Feedback System - Rating and review collection with analytics
+
 Salary & Work Management - Automated payroll and attendance tracking
+
 Admin Dashboard - Comprehensive business intelligence and reporting
+
 
 * Technology Stack
 
 Frontend: HTML, CSS, JavaScript (Responsive Web Design)
+
 Backend: Java
+
 Database: MS SQL
+
 Payment Integration: Secure payment gateway
+
 Version Control: Git
+
