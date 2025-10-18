@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BookingRepository {
@@ -151,6 +152,34 @@ public class BookingRepository {
                 + "  AND DriverId IS NULL "
                 + "  AND BoatId   IS NULL";
         return jdbc.queryForObject(sql, Integer.class);
+    }
+
+    public Staff getStaffEmailAndName(int staffId) {
+        return jdbc.queryForObject(
+                "SELECT u.Email, u.FirstName + ' ' + u.LastName AS StaffName " +
+                        "FROM [User] u " +
+                        "WHERE u.UserId = ?",
+                (rs, rowNum) -> {
+                    Staff info = new Staff();
+                    info.setEmail(rs.getString("Email"));
+                    info.setName(rs.getString("StaffName"));
+                    return info;
+                },
+                staffId
+        );
+    }
+
+    // Get trip details for email
+    public String getTripDetails(int bookingId) {
+        return jdbc.queryForObject(
+                "SELECT t.TripName + ' - ' + t.Destinations + ' (Date: ' + " +
+                        "CONVERT(VARCHAR, b.BookingDate) + ')' " +
+                        "FROM Booking b " +
+                        "JOIN Trip t ON b.TripId = t.TripId " +
+                        "WHERE b.BookingId = ?",
+                String.class,
+                bookingId
+        );
     }
 
 
