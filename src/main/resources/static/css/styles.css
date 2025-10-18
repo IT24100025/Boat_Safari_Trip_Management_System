@@ -295,3 +295,92 @@ main.container {
         width: 100%;
     }
 }
+
+/* ===== BOOKING DETAILS PAGE ===== */
+.details-wrapper {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 0 20px;
+}
+
+.details-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.details-card h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 1.5rem;
+}
+
+.details-list {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.details-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1rem;
+    color: var(--dark-text);
+}
+
+.details-list li:last-child {
+    border-bottom: none;
+}
+
+.details-list li strong {
+    font-weight: 600;
+    color: var(--light-text);
+}
+
+.back-link {
+    display: inline-block;
+    font-size: 0.95rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--primary-dark);
+    transform: translateX(-4px);
+}
+
+/* STATUS COLORS */
+.status-pending {
+    color: var(--accent);
+}
+
+.status-confirmed {
+    color: var(--success);
+}
+
+.status-cancelled {
+    color: var(--danger);
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 600px) {
+    .details-card {
+        padding: 1.5rem;
+    }
+
+    .details-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .details-list li strong {
+        width: 100%;
+    }
+}
