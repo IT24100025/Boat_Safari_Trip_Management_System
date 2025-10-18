@@ -30,10 +30,19 @@
 
 <!-- Main content area -->
 <main class="container">
-    <div class="summary-card">
-        <h2>Bookings Made Today</h2>
-        <p th:text="${todayBookingCount}">0</p>
+    <div class="summaries">
+        <div class="summary-card">
+            <h2>Today's Bookings</h2>
+            <p th:text="${todayBookingCount}">0</p>
+        </div>
+        <div class="summary-card">
+            <h2>Unassigned Bookings</h2>
+            <p th:text="${unassignedCount}">0</p>
+        </div>
     </div>
+
+
+
 
     <div class="table-container">
         <table class="data-table sortable-table" data-clickable>

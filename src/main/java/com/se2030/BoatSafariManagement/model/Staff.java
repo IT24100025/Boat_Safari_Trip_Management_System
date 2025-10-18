@@ -3,7 +3,8 @@ package com.se2030.BoatSafariManagement.model;
 public class Staff {
     private int staffId;
     private String name;      // e.g. First + Last from User
-    private String role;// New field
+    private String role;
+    private String email;// New field
 
     // getters and setters
     public int getStaffId() { return staffId; }
@@ -14,5 +15,9 @@ public class Staff {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
 }
 

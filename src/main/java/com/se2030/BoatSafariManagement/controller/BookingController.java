@@ -54,6 +54,7 @@ public class BookingController {
         bookingService.assignStaff(bookingId, guideId, driverId);
         bookingService.assignBoat(bookingId, boatId);
         bookingService.updateAvailability(guideId, driverId, boatId);
+        bookingService.updateBookingStatus(bookingId);
 
         // Redirect back to booking detail page
         return "redirect:/" + bookingId + "/showBookingDetail";
@@ -72,9 +73,12 @@ public class BookingController {
     public String listAllBookings(Model model) {
         List<BookingDetails> bookingDetails = bookingService.getAllBookings();
         int todayBookingCount = bookingService.getTodayBookingCount();
+        int unassignedCount = bookingService.getUnassignedBookingCount();
 
         model.addAttribute("bookingDetails", bookingDetails);
         model.addAttribute("todayBookingCount", todayBookingCount);
+        model.addAttribute("unassignedCount",   unassignedCount);
+
         return "showAllBookings";    // resolves to showAllBookings.html
     }
 

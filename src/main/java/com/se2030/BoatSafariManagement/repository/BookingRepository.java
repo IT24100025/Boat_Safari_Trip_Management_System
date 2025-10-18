@@ -109,6 +109,13 @@ public class BookingRepository {
         );
     }
 
+    public void updateBookingStatus(int bookingId) {
+        jdbc.update(
+                "UPDATE Booking SET Status = 'Confirmed' WHERE BookingId = ?",
+                bookingId
+        );
+    }
+
     // List available boats
     public List<Boat> getAvailableBoats() {
         return jdbc.query(
@@ -135,6 +142,19 @@ public class BookingRepository {
         String sql = "SELECT COUNT(*) FROM booking WHERE CAST(BookingDate AS DATE) = CAST(GETDATE() AS DATE)";
         return jdbc.queryForObject(sql, Integer.class);
     }
+
+    public int getUnassignedBookingCount() {
+        String sql = ""
+                + "SELECT COUNT(*) "
+                + "FROM booking "
+                + "WHERE GuideId IS NULL "
+                + "  AND DriverId IS NULL "
+                + "  AND BoatId   IS NULL";
+        return jdbc.queryForObject(sql, Integer.class);
+    }
+
+
+
 
 
 }

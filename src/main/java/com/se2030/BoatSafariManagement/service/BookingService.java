@@ -43,6 +43,10 @@ public class BookingService {
         repo.assignGuideAndDriver(bookingId, guideId, driverId);
     }
 
+    public void updateBookingStatus(int bookingId) {
+        repo.updateBookingStatus(bookingId);
+    }
+
     public List<BookingDetails> getAllBookings() {
         return repo.getAllBookings();
     }
@@ -53,5 +57,11 @@ public class BookingService {
     public int getTodayBookingCount(){
         return repo.getTodayBookingCount();
     }
+
+    public int getUnassignedBookingCount(){
+        return repo.getUnassignedBookingCount();
+    }
+
+
 }
 
