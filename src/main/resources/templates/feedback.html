@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Feedback - Boat Safari Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Boat Safari Management</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/staff">Staff</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/payments">Payments</a></li>
+                <li><a href="/maintenance">Maintenance</a></li>
+                <li><a href="/trips">Trips</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h2>Customer Feedback 💬</h2>
+    <p>Customer reviews and ratings for boat safari experiences. Delete inappropriate feedback when necessary.</p>
+
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Total Feedback</h3>
+            <p th:text="${feedbacks.size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Average Rating</h3>
+            <!-- FIXED: Using averageRating calculated in controller -->
+            <p th:text="${#numbers.formatDecimal(averageRating, 1, 1)} + ' / 5'">0.0 / 5</p>
+        </div>
+        <div class="stat-card">
+            <h3>5-Star Reviews</h3>
+            <p th:text="${feedbacks.?[rating == 5].size()}">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Recent</h3>
+            <p th:text="${recentFeedbackCount}">0</p>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Feedback ID</th>
+            <th>Customer</th>
+            <th>Trip</th>
+            <th>Booking ID</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Submitted Date</th>
+            <th>Actions</th> <!-- NEW: Added Actions column -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="feedback : ${feedbacks}">
+            <td th:text="${feedback.feedbackId}">1</td>
+            <td th:text="${feedback.customerId}">Customer 1</td>
+            <td th:text="${feedback.tripId}">Morning Safari</td>
+            <td th:text="${feedback.bookingId}">101</td>
+            <td>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span th:text="${feedback.rating}">5</span>
+                    <span style="color: #fbbf24;">⭐</span>
+                </div>
+            </td>
+            <td>
+                <div style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                     th:text="${feedback.comment}"
+                     th:title="${feedback.comment}">
+                    Great experience!
+                </div>
+            </td>
+            <td th:text="${#temporals.format(feedback.submittedDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 14:30</td>
+            <td>
+                <!-- NEW: Delete button for each feedback -->
+                <form th:action="@{/feedback/delete/{id}(id=${feedback.feedbackId})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.85rem;"
+                            onclick="return confirm('Are you sure you want to delete this feedback? This action cannot be undone.')">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${feedbacks.empty}">
+            <td colspan="8" style="text-align: center; padding: 3rem; color: var(--light-text);">
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;">💬</div>
+                <h3>No Feedback Yet</h3>
+                <p>Customer feedback will appear here once they submit reviews for their trips.</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                link.style.fontWeight = 'bold';
+            }
+        });
+
+        // Confirm deletion for all delete buttons
+        const deleteForms = document.querySelectorAll('form[action*="/feedback/delete"]');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

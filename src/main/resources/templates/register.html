@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Admin - Boat Safari Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-box" style="max-width: 480px;">
+        <h2>👤 Create Admin Account</h2>
+        <p style="color: var(--light-text); margin-bottom: 1.5rem;">Register new system administrator</p>
+
+        <form th:action="@{/register}" method="post">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="input-group">
+                    <label>First Name *</label>
+                    <input type="text" name="firstName" required placeholder="John">
+                </div>
+                <div class="input-group">
+                    <label>Last Name *</label>
+                    <input type="text" name="lastName" required placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email Address *</label>
+                <input type="email" name="email" required placeholder="john.doe@boatsafari.com">
+            </div>
+
+            <div class="input-group">
+                <label>Password *</label>
+                <input type="password" name="password" required placeholder="Minimum 6 characters" minlength="6">
+            </div>
+
+            <div class="input-group">
+                <label>Contact Number</label>
+                <input type="text" name="contactNumber" placeholder="+94 77 123 4567">
+            </div>
+
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+            <button type="submit" class="btn btn-secondary" style="margin-top: 1rem;">Register Admin Account</button>
+        </form>
+
+        <p class="register-link">
+            Already have an account?
+            <a href="/login" style="color: var(--primary); font-weight: 600;">Sign in here</a>
+        </p>
+
+        <div style="margin-top: 1.5rem; padding: 1rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <small style="color: #856404;">
+                <strong>⚠️ Admin Access Only</strong><br>
+                This registration is for system administrators only. Regular staff members should be added through the Staff Management panel.
+            </small>
+        </div>
+    </div>
+</div>
+</body>
+</html>
