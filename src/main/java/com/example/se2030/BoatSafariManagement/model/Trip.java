@@ -1,4 +1,4 @@
-package com.example.se2030.BoatSafariManagement.entity;
+package com.example.se2030.BoatSafariManagement.model;
 
 import lombok.Data;
 import java.math.BigDecimal;

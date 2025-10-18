@@ -1,6 +1,9 @@
 package com.example.se2030.BoatSafariManagement.service;
 
-import com.example.se2030.BoatSafariManagement.entity.*;
+import com.example.se2030.BoatSafariManagement.model.Booking;
+import com.example.se2030.BoatSafariManagement.model.Customer;
+import com.example.se2030.BoatSafariManagement.model.Payment;
+import com.example.se2030.BoatSafariManagement.model.Trip;
 import com.example.se2030.BoatSafariManagement.repository.BookingJDBCRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
