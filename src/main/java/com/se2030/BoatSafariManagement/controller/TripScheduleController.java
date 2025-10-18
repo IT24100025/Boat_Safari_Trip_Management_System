@@ -69,23 +69,41 @@ public class TripScheduleController {
             return false;
         }
 
-        public int getDayOfMonth() { return dayOfMonth; }
-        public void setDayOfMonth(int dayOfMonth) { this.dayOfMonth = dayOfMonth; }
+        public int getDayOfMonth() {
+            return dayOfMonth;
+        }
+        public void setDayOfMonth(int dayOfMonth) {
+            this.dayOfMonth = dayOfMonth;
+        }
 
-        public boolean isOtherMonth() { return otherMonth; }
-        public void setOtherMonth(boolean otherMonth) { this.otherMonth = otherMonth; }
+        public boolean isOtherMonth() {
+            return otherMonth;
+        }
+        public void setOtherMonth(boolean otherMonth) {
+            this.otherMonth = otherMonth;
+        }
 
-        public boolean isToday() { return today; }
-        public void setToday(boolean today) { this.today = today; }
+        public boolean isToday() {
+            return today;
+        }
+        public void setToday(boolean today) {
+            this.today = today;
+        }
 
-        public List<Trip> getTrips() { return trips; }
+        public List<Trip> getTrips() {
+            return trips;
+        }
         public void setTrips(List<Trip> trips) {
             this.trips = trips;
             this.hasConflicts = calculateHasConflicts();
         }
 
-        public boolean isHasConflicts() { return hasConflicts; }
-        public void setHasConflicts(boolean hasConflicts) { this.hasConflicts = hasConflicts; }
+        public boolean isHasConflicts() {
+            return hasConflicts;
+        }
+        public void setHasConflicts(boolean hasConflicts) {
+            this.hasConflicts = hasConflicts;
+        }
     }
 
     // Conflict DTO for displaying conflict information
@@ -101,14 +119,26 @@ public class TripScheduleController {
         }
 
         // Getters and setters
-        public String getDescription() { return description; }
-        public void setDescription(String description) { this.description = description; }
+        public String getDescription() {
+            return description;
+        }
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-        public LocalDate getDate() { return date; }
-        public void setDate(LocalDate date) { this.date = date; }
+        public LocalDate getDate() {
+            return date;
+        }
+        public void setDate(LocalDate date) {
+            this.date = date;
+        }
 
-        public List<Integer> getTripIds() { return tripIds; }
-        public void setTripIds(List<Integer> tripIds) { this.tripIds = tripIds; }
+        public List<Integer> getTripIds() {
+            return tripIds;
+        }
+        public void setTripIds(List<Integer> tripIds) {
+            this.tripIds = tripIds;
+        }
     }
 
     // Enhanced Trip DTO for displaying additional information
@@ -128,20 +158,44 @@ public class TripScheduleController {
         }
 
         // Delegate methods to the underlying trip
-        public Integer getTripId() { return trip.getTripId(); }
-        public String getTripName() { return trip.getTripName(); }
-        public LocalDateTime getDepartureTime() { return trip.getDepartureTime(); }
-        public Integer getDuration() { return trip.getDuration(); }
-        public String getDestinations() { return trip.getDestinations(); }
-        public String getDescription() { return trip.getDescription(); }
-        public Integer getAvailability() { return trip.getAvailability(); }
-        public Double getBasePrice() { return trip.getBasePrice(); }
+        public Integer getTripId() {
+            return trip.getTripId();
+        }
+        public String getTripName() {
+            return trip.getTripName();
+        }
+        public LocalDateTime getDepartureTime() {
+            return trip.getDepartureTime();
+        }
+        public Integer getDuration() {
+            return trip.getDuration();
+        }
+        public String getDestinations() {
+            return trip.getDestinations();
+        }
+        public String getDescription() {
+            return trip.getDescription();
+        }
+        public Integer getAvailability() {
+            return trip.getAvailability();
+        }
+        public Double getBasePrice() {
+            return trip.getBasePrice();
+        }
 
         // Enhanced properties
-        public boolean isHasConflict() { return hasConflict; }
-        public String getCapacityStatus() { return capacityStatus; }
-        public String getConflictDetails() { return conflictDetails; }
-        public String getStatus() { return status; } // NEW: Getter for status
+        public boolean isHasConflict() {
+            return hasConflict;
+        }
+        public String getCapacityStatus() {
+            return capacityStatus;
+        }
+        public String getConflictDetails() {
+            return conflictDetails;
+        }
+        public String getStatus() {
+            return status;
+        }
     }
 
     @GetMapping
@@ -173,7 +227,7 @@ public class TripScheduleController {
         int availableBoats = tripService.getAllBoats().size();
         int scheduledStaff = calculateScheduledStaff(trips);
 
-        // NEW: Calculate today and past trips count
+        // Calculate today and past trips count
         int todayTrips = (int) trips.stream().filter(t -> "TODAY".equals(t.getStatus())).count();
         int pastTrips = (int) trips.stream().filter(t -> "PAST".equals(t.getStatus())).count();
 
@@ -185,8 +239,8 @@ public class TripScheduleController {
         model.addAttribute("totalTrips", totalTrips);
         model.addAttribute("availableBoats", availableBoats);
         model.addAttribute("scheduledStaff", scheduledStaff);
-        model.addAttribute("todayTrips", todayTrips); // NEW: Added today trips count
-        model.addAttribute("pastTrips", pastTrips);   // NEW: Added past trips count
+        model.addAttribute("todayTrips", todayTrips); //  Added today trips count
+        model.addAttribute("pastTrips", pastTrips);   //  Added past trips count
 
         return "update-schedule";
     }
@@ -402,7 +456,7 @@ public class TripScheduleController {
     }
 
     private int calculateScheduledStaff(List<Trip> trips) {
-        // This is a simplified calculation - adjust based on your actual staff assignment logic
+        // This is a simplified calculation  adjust based on your actual staff assignment logic
         return trips.stream()
                 .mapToInt(trip -> 2) // Assuming 2 staff per trip (driver + guide)
                 .sum();
@@ -477,7 +531,7 @@ public class TripScheduleController {
                 .collect(Collectors.toList());
     }
 
-    // Rest of your existing methods remain the same...
+
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("trip", new Trip());
