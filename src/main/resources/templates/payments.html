@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Maintenance Logs - Boat Safari Management</title>
+    <title>Payment Records - Boat Safari Management</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -16,7 +16,7 @@
                 <li><a href="/feedback">Feedback</a></li>
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/trip-schedule">Trip Schedule</a></li> <!-- UPDATED -->
+                <li><a href="/trip-schedule">Trip Schedule</a></li>
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
@@ -25,122 +25,61 @@
 </header>
 
 <main>
-    <h2>Boat Maintenance Logs 🔧</h2>
-    <p>Track and update maintenance status for all boats in the fleet.</p>
+    <h2>Payment Records 💰</h2>
+    <p>View and monitor all payment transactions for boat safari bookings.</p>
 
-    <!-- Add Maintenance Form -->
-    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 2rem;">
-        <h3>Report New Maintenance Issue</h3>
-        <form th:action="@{/maintenance/add}" method="post" id="maintenanceForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-
-            <!-- Boat Selection Dropdown -->
-            <div class="input-group">
-                <label>Select Boat *</label>
-                <select name="boatId" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
-                    <option value="">Select a Boat</option>
-                    <option th:each="boat : ${availableBoats}"
-                            th:value="${boat.BoatId}"
-                            th:text="${boat.BoatName + ' (' + boat.BoatType + ' - Capacity: ' + boat.Capacity + ')'}">
-                    </option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Issue Description *</label>
-                <textarea name="issueDescription" placeholder="Describe the maintenance issue..." required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; resize: vertical;" rows="3"></textarea>
-            </div>
-            <div class="input-group">
-                <label>Estimated Cost ($)</label>
-                <input type="number" step="0.01" name="cost" placeholder="0.00" min="0">
-            </div>
-            <div class="input-group">
-                <label>Status *</label>
-                <select name="status" required style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px;">
-                    <option value="">Select Status</option>
-                    <option value="Reported">Reported</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Resolved">Resolved</option>
-                </select>
-            </div>
-            <input type="hidden" name="reportedByAdminId" th:value="${currentAdminId}">
-            <div style="grid-column: 1 / -1;">
-                <button type="submit" class="btn btn-primary">Submit Maintenance Report</button>
-            </div>
-        </form>
-    </div>
-
+    <!-- Statistics for Payments -->
     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
         <div class="stat-card">
-            <h3>Total Logs</h3>
-            <p th:text="${maintenances.size()}">0</p>
+            <h3>Total Payments</h3>
+            <p th:text="${payments.size()}">0</p>
         </div>
         <div class="stat-card">
-            <h3>Reported</h3>
-            <p th:text="${maintenances.?[status == 'Reported'].size()}">0</p>
+            <h3>Total Revenue</h3>
+            <p th:text="'$' + ${#numbers.formatDecimal(totalAmount, 1, 2)}">$0.00</p>
         </div>
         <div class="stat-card">
-            <h3>In Progress</h3>
-            <p th:text="${maintenances.?[status == 'In Progress'].size()}">0</p>
+            <h3>Successful</h3>
+            <p th:text="${payments.?[status == 'Successful'].size()}">0</p>
         </div>
         <div class="stat-card">
-            <h3>Resolved</h3>
-            <p th:text="${maintenances.?[status == 'Resolved'].size()}">0</p>
+            <h3>Pending</h3>
+            <p th:text="${payments.?[status == 'Pending'].size()}">0</p>
         </div>
     </div>
 
+    <!-- Payments Table -->
     <table class="data-table">
         <thead>
         <tr>
-            <th>Maintenance ID</th>
-            <th>Boat ID</th>
-            <th>Reported By</th>
-            <th>Issue Description</th>
-            <th>Date Reported</th>
-            <th>Date Resolved</th>
-            <th>Cost</th>
+            <th>Payment ID</th>
+            <th>Booking ID</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+            <th>Payment Method</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>Transaction ID</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="maintenance : ${maintenances}">
-            <td th:text="${maintenance.maintenanceId}">1</td>
-            <td th:text="${maintenance.boatId}">B01</td>
-            <td th:text="${'Admin ' + maintenance.reportedByAdminId}">Admin 1</td>
+        <tr th:each="payment : ${payments}">
+            <td th:text="${payment.paymentId}">1</td>
+            <td th:text="${payment.bookingId}">101</td>
+            <td th:text="'$' + ${#numbers.formatDecimal(payment.amount, 1, 2)}">$150.00</td>
+            <td th:text="${#temporals.format(payment.paymentDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 14:30</td>
+            <td th:text="${payment.paymentMethod}">Credit Card</td>
             <td>
-                <div style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                     th:text="${maintenance.issueDescription}"
-                     th:title="${maintenance.issueDescription}">
-                    Engine oil leak
-                </div>
+                <span th:if="${payment.status == 'Successful'}" class="status-completed">Successful</span>
+                <span th:if="${payment.status == 'Pending'}" class="status-pending">Pending</span>
+                <span th:if="${payment.status == 'Failed'}" class="status-cancelled">Failed</span>
             </td>
-            <td th:text="${#temporals.format(maintenance.dateReported, 'yyyy-MM-dd HH:mm')}">2024-04-28</td>
-            <td>
-                <span th:if="${maintenance.dateResolved}" th:text="${#temporals.format(maintenance.dateResolved, 'yyyy-MM-dd HH:mm')}">2024-04-30</span>
-                <span th:if="${maintenance.dateResolved == null}" style="color: var(--light-text);">-</span>
-            </td>
-            <td th:text="${maintenance.cost != null ? '$' + #numbers.formatDecimal(maintenance.cost, 1, 2) : '$0.00'}">$250.00</td>
-            <td>
-                <span th:if="${maintenance.status == 'Resolved'}" class="status-completed">Resolved</span>
-                <span th:if="${maintenance.status == 'In Progress'}" class="status-pending">In Progress</span>
-                <span th:if="${maintenance.status == 'Reported'}" style="color: var(--danger); font-weight: 600;">Reported</span>
-            </td>
-            <td>
-                <form th:action="@{/maintenance/update/{id}(id=${maintenance.maintenanceId})}" method="post" style="display: inline;">
-                    <select name="status" style="padding: 0.4rem; border-radius: 4px; border: 1px solid var(--border-color); margin-right: 0.5rem;">
-                        <option value="Reported" th:selected="${maintenance.status == 'Reported'}">Reported</option>
-                        <option value="In Progress" th:selected="${maintenance.status == 'In Progress'}">In Progress</option>
-                        <option value="Resolved" th:selected="${maintenance.status == 'Resolved'}">Resolved</option>
-                    </select>
-                    <button type="submit" class="btn btn-secondary" style="padding:0.4rem 0.8rem;">Update</button>
-                </form>
-            </td>
+            <td th:text="${payment.transactionId}">TXN123456</td>
         </tr>
-        <tr th:if="${maintenances.empty}">
-            <td colspan="9" style="text-align: center; padding: 3rem; color: var(--light-text);">
-                <div style="font-size: 1.5rem; margin-bottom: 1rem;">🔧</div>
-                <h3>No Maintenance Records</h3>
-                <p>Maintenance logs will appear here once boat issues are reported.</p>
+        <tr th:if="${payments.empty}">
+            <td colspan="7" style="text-align: center; padding: 3rem; color: var(--light-text);">
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;">💰</div>
+                <h3>No Payment Records</h3>
+                <p>Payment records will appear here once customers make bookings and payments.</p>
             </td>
         </tr>
         </tbody>
@@ -159,34 +98,6 @@
                 link.style.fontWeight = 'bold';
             }
         });
-
-        // Form validation for maintenance form
-        const maintenanceForm = document.getElementById('maintenanceForm');
-        if (maintenanceForm) {
-            maintenanceForm.addEventListener('submit', function(e) {
-                const boatId = document.querySelector('select[name="boatId"]').value;
-                const issueDescription = document.querySelector('textarea[name="issueDescription"]').value;
-                const status = document.querySelector('select[name="status"]').value;
-
-                if (!boatId || !issueDescription.trim() || !status) {
-                    e.preventDefault();
-                    alert('Please fill in all required fields (Boat, Issue Description, and Status).');
-                    return false;
-                }
-            });
-        }
-
-        // Auto-fill current date for resolved issues
-        const statusSelect = document.querySelector('select[name="status"]');
-        if (statusSelect) {
-            statusSelect.addEventListener('change', function() {
-                if (this.value === 'Resolved') {
-                    if (!confirm('Marking as Resolved will set the resolution date to now. Continue?')) {
-                        this.value = '';
-                    }
-                }
-            });
-        }
     });
 </script>
 </body>
