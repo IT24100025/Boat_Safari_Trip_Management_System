@@ -250,6 +250,53 @@ public class TripScheduleController {
         return "test";
     }
 
+    @GetMapping("/user-view")
+    public String showUserSchedule(Model model) {
+        List<Trip> trips = tripService.getAllTrips();
+
+        // Calculate status for each trip
+        for (Trip trip : trips) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime tripTime = trip.getDepartureTime();
+
+            if (tripTime.toLocalDate().isEqual(now.toLocalDate())) {
+                trip.setStatus("TODAY");
+            } else if (tripTime.isBefore(now)) {
+                trip.setStatus("PAST");
+            } else {
+                trip.setStatus("UPCOMING");
+            }
+        }
+
+        // Enhance trips with conflict and capacity information
+        List<EnhancedTrip> enhancedTrips = enhanceTripsWithConflictInfo(trips);
+
+        // Calculate statistics
+        int upcomingTrips = calculateUpcomingTrips(trips);
+        int conflictCount = detectConflicts(trips).size();
+        String occupancyRate = calculateOccupancyRate(trips);
+        int totalTrips = trips.size();
+        int availableBoats = tripService.getAllBoats().size();
+        int scheduledStaff = calculateScheduledStaff(trips);
+
+        // Calculate today and past trips count
+        int todayTrips = (int) trips.stream().filter(t -> "TODAY".equals(t.getStatus())).count();
+        int pastTrips = (int) trips.stream().filter(t -> "PAST".equals(t.getStatus())).count();
+
+        // Add all attributes to model
+        model.addAttribute("trips", enhancedTrips);
+        model.addAttribute("upcomingTrips", upcomingTrips);
+        model.addAttribute("conflictCount", conflictCount);
+        model.addAttribute("occupancyRate", occupancyRate);
+        model.addAttribute("totalTrips", totalTrips);
+        model.addAttribute("availableBoats", availableBoats);
+        model.addAttribute("scheduledStaff", scheduledStaff);
+        model.addAttribute("todayTrips", todayTrips);
+        model.addAttribute("pastTrips", pastTrips);
+
+        return "user-schedule-view";
+    }
+
     @GetMapping("/")
     public String home() {
         return "redirect:/trip-schedule";
