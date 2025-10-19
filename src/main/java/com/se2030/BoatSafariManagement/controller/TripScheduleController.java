@@ -14,7 +14,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -371,7 +374,7 @@ public class TripScheduleController {
             // Check for conflicts with other trips on the same day
             if (sameDayTrips != null && sameDayTrips.size() > 1) {
                 for (Trip otherTrip : sameDayTrips) {
-                    if (!Objects.equals(otherTrip.getTripId(), trip.getTripId())) {
+                    if (!otherTrip.getTripId().equals(trip.getTripId())) {
                         LocalDateTime start1 = trip.getDepartureTime();
                         LocalDateTime end1 = start1.plusMinutes(trip.getDuration());
                         LocalDateTime start2 = otherTrip.getDepartureTime();
