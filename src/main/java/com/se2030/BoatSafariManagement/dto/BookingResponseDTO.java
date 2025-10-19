@@ -1,4 +1,4 @@
-package com.example.se2030.BoatSafariManagement.dto;
+package com.se2030.BoatSafariManagement.dto;
 
 import lombok.Data;
 import java.math.BigDecimal;

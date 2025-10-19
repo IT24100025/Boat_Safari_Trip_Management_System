@@ -1,4 +1,4 @@
-package com.example.se2030.BoatSafariManagement.model;
+package com.se2030.BoatSafariManagement.model;
 
 // Composite key class
 public class UserContactId implements java.io.Serializable {

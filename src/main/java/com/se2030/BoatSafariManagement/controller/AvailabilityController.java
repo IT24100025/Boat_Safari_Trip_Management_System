@@ -1,7 +1,7 @@
-package com.example.se2030.BoatSafariManagement.controller;
+package com.se2030.BoatSafariManagement.controller;
 
-import com.example.se2030.BoatSafariManagement.model.Trip;
-import com.example.se2030.BoatSafariManagement.service.BookingService;
+import com.se2030.BoatSafariManagement.model.Trip;
+import com.se2030.BoatSafariManagement.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

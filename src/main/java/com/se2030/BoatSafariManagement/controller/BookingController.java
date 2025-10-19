@@ -1,12 +1,12 @@
-package com.example.se2030.BoatSafariManagement.controller;
+package com.se2030.BoatSafariManagement.controller;
 
-import com.example.se2030.BoatSafariManagement.dto.BookingRequestDTO;
-import com.example.se2030.BoatSafariManagement.dto.BookingResponseDTO;
-import com.example.se2030.BoatSafariManagement.model.Booking;
-import com.example.se2030.BoatSafariManagement.model.Customer;
-import com.example.se2030.BoatSafariManagement.model.Payment;
-import com.example.se2030.BoatSafariManagement.model.Trip;
-import com.example.se2030.BoatSafariManagement.service.BookingService;
+import com.se2030.BoatSafariManagement.dto.BookingRequestDTO;
+import com.se2030.BoatSafariManagement.dto.BookingResponseDTO;
+import com.se2030.BoatSafariManagement.model.Booking;
+import com.se2030.BoatSafariManagement.model.Customer;
+import com.se2030.BoatSafariManagement.model.Payment;
+import com.se2030.BoatSafariManagement.model.Trip;
+import com.se2030.BoatSafariManagement.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.example.se2030.BoatSafariManagement.config;
+package com.se2030.BoatSafariManagement.config;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;

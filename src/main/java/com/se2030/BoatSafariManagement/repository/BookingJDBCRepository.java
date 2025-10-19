@@ -1,9 +1,9 @@
-package com.example.se2030.BoatSafariManagement.repository;
+package com.se2030.BoatSafariManagement.repository;
 
-import com.example.se2030.BoatSafariManagement.model.Booking;
-import com.example.se2030.BoatSafariManagement.model.Customer;
-import com.example.se2030.BoatSafariManagement.model.Payment;
-import com.example.se2030.BoatSafariManagement.model.Trip;
+import com.se2030.BoatSafariManagement.model.Booking;
+import com.se2030.BoatSafariManagement.model.Customer;
+import com.se2030.BoatSafariManagement.model.Payment;
+import com.se2030.BoatSafariManagement.model.Trip;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
