@@ -16,7 +16,7 @@
                 <li><a href="/feedback">Feedback</a></li>
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/trips">Trips</a></li>
+                <li><a href="/trip-schedule">Trip Schedule</a></li> <!-- UPDATED -->
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
@@ -35,7 +35,6 @@
         </div>
         <div class="stat-card">
             <h3>Average Rating</h3>
-            <!-- FIXED: Using averageRating calculated in controller -->
             <p th:text="${#numbers.formatDecimal(averageRating, 1, 1)} + ' / 5'">0.0 / 5</p>
         </div>
         <div class="stat-card">
@@ -58,7 +57,7 @@
             <th>Rating</th>
             <th>Comment</th>
             <th>Submitted Date</th>
-            <th>Actions</th> <!-- NEW: Added Actions column -->
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -82,7 +81,7 @@
             </td>
             <td th:text="${#temporals.format(feedback.submittedDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 14:30</td>
             <td>
-                <!-- NEW: Delete button for each feedback -->
+                <!-- Delete button for each feedback -->
                 <form th:action="@{/feedback/delete/{id}(id=${feedback.feedbackId})}" method="post" style="display: inline;">
                     <button type="submit" class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.85rem;"
                             onclick="return confirm('Are you sure you want to delete this feedback? This action cannot be undone.')">

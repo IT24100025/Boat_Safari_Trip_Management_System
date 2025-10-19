@@ -32,10 +32,15 @@ public class Staff {
     public void setSalary(BigDecimal salary) { this.salary = salary; }
     public String getLaneNumber() { return laneNumber; }
     public void setLaneNumber(String laneNumber) { this.laneNumber = laneNumber; }
+
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
+
     public Boolean getAvailability() { return availability; }
     public void setAvailability(Boolean availability) { this.availability = availability; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

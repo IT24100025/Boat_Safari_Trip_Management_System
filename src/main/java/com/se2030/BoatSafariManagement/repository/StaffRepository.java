@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -31,6 +32,15 @@ public class StaffRepository {
         staff.setRole(rs.getString("Role"));
         return staff;
     };
+
+    // Add this missing method
+    public List<Staff> findByRole(String role) {
+        String sql = "SELECT s.StaffId, u.FirstName, u.LastName, u.Email, " +
+                "s.Salary, s.LaneNumber, s.City, s.Availability, u.Role " +
+                "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId " +
+                "WHERE u.Role = ? AND u.Role != 'Deleted' AND s.Availability = 1";
+        return jdbcTemplate.query(sql, staffRowMapper, role);
+    }
 
     public List<Staff> findAllStaffWithUserDetails() {
         String sql = "SELECT s.StaffId, u.FirstName, u.LastName, u.Email," +
@@ -108,5 +118,15 @@ public class StaffRepository {
     public int getLastInsertedUserId() {
         String sql = "SELECT MAX(UserId) FROM [User]";
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public List<Staff> findAvailableStaff(LocalDateTime departureTime, Integer duration, String role) {
+        // You might want to implement this method properly
+        // For now, returning staff by role who are available
+        String sql = "SELECT s.StaffId, u.FirstName, u.LastName, u.Email, " +
+                "s.Salary, s.LaneNumber, s.City, s.Availability, u.Role " +
+                "FROM Staff s INNER JOIN [User] u ON s.StaffId = u.UserId " +
+                "WHERE u.Role = ? AND s.Availability = 1 AND u.Role != 'Deleted'";
+        return jdbcTemplate.query(sql, staffRowMapper, role);
     }
 }
