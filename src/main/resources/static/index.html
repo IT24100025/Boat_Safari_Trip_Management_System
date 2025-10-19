@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boat Safari Salary System</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e1e5ee;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #c1121f;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.85rem;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(135deg, #218838, #1ea085);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+        }
+
+        .print-section {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .print-icon {
+            font-size: 18px;
+        }
+
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .printable-content, .printable-content * {
+                visibility: visible;
+            }
+            .printable-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .btn-print {
+                display: none !important;
+            }
+        }
+
+        .result-container {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--success);
+        }
+
+        .error-container {
+            background: #ffe6e6;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--warning);
+            display: none;
+        }
+
+        .salary-breakdown {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .final-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: var(--border-radius);
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 1px solid #e1e5ee;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .audit-item {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: relative;
+            border: 1px solid #e1e5ee;
+        }
+
+        .audit-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-section {
+            background: #fff5f5;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #ffcccc;
+        }
+
+        .delete-form {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .delete-input-group {
+            flex: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 576px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab {
+                padding: 10px;
+            }
+            .audit-actions {
+                position: static;
+                margin-top: 10px;
+                display: flex;
+                justify-content: flex-end;
+            }
+            .delete-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('salaryTab')">Salary Calculator</div>
+        <div class="tab" onclick="showTab('auditTab')">Salary Audit</div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2 id="cardTitle">Boat Safari Salary Calculator</h2>
+            <p class="subtitle" id="cardSubtitle">Calculate and manage staff salaries for boat safari operations</p>
+        </div>
+        <div class="card-body">
+            <!-- Salary Calculator Tab -->
+            <div class="tab-content active" id="salaryTab">
+                <form id="salaryForm">
+                    <div class="form-group">
+                        <label for="salaryStaffId">Staff ID</label>
+                        <input type="number" id="salaryStaffId" required oninput="fetchSalaryDetails()" placeholder="Enter Staff ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="salaryAdminId">Admin ID</label>
+                        <input type="number" id="salaryAdminId" required placeholder="Enter Admin ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="periodMonth">Period Month</label>
+                        <select id="periodMonth" required>
+                            <option value="">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-full">Calculate & Save Salary</button>
+                </form>
+
+                <div class="loader" id="salaryLoader">
+                    <div class="loader-spinner"></div>
+                    <p>Calculating salary...</p>
+                </div>
+
+                <div class="result-container" id="salaryResult" style="display: none;">
+                    <!-- Results will be populated here -->
+                </div>
+
+                <div class="error-container" id="salaryError">
+                    <!-- Error messages will be shown here -->
+                </div>
+            </div>
+
+            <!-- Salary Audit Tab -->
+            <div class="tab-content" id="auditTab">
+                <form id="auditFilterForm">
+                    <div class="form-group">
+                        <label for="auditSalaryId">Salary ID (Optional)</label>
+                        <input type="number" id="auditSalaryId" placeholder="Enter Salary ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="auditAdminId">Admin ID</label>
+                        <input type="number" id="auditAdminId" required placeholder="Enter Admin ID">
+                    </div>
+                    <button type="submit" class="btn btn-full">Fetch Audit Logs</button>
+                </form>
+
+                <!-- DELETE SECTION - Added this clear section for deleting audit records -->
+                <div class="delete-section">
+                    <h3>Delete Audit Record</h3>
+                    <p>Enter the specific Audit ID to delete a record (requires Admin ID for authorization)</p>
+                    <form id="deleteAuditForm" class="delete-form">
+                        <div class="delete-input-group">
+                            <label for="deleteAuditId">Audit ID</label>
+                            <input type="number" id="deleteAuditId" required placeholder="Enter Audit ID to delete">
+                        </div>
+                        <div class="delete-input-group">
+                            <label for="deleteAdminId">Admin ID</label>
+                            <input type="number" id="deleteAdminId" required placeholder="Admin ID">
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-small">Delete Record</button>
+                    </form>
+                </div>
+
+                <div class="loader" id="auditLoader">
+                    <div class="loader-spinner"></div>
+                    <p>Loading audit logs...</p>
+                </div>
+
+                <div class="result-container" id="auditResult" style="display: none;">
+                    <!-- Audit logs will be populated here -->
+                </div>
+
+                <div class="error-container" id="auditError">
+                    <!-- Error messages will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <h3>Confirm Deletion</h3>
+        <p>Are you sure you want to delete audit record #<span id="deleteAuditIdDisplay"></span>? This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="btn btn-danger btn-small" id="confirmDelete">Delete</button>
+            <button class="btn btn-small" id="cancelDelete">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global variables
+    let currentAuditIdToDelete = null;
+
+    // Helper function to get month name
+    function getMonthName(monthNumber) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[monthNumber - 1] || 'Unknown';
+    }
+
+    function showTab(tabId) {
+        // Update tab active states
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+
+        // Update tab content visibility
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+
+        // Update card header based on active tab
+        const cardTitle = document.getElementById('cardTitle');
+        const cardSubtitle = document.getElementById('cardSubtitle');
+        if (tabId === 'salaryTab') {
+            cardTitle.textContent = 'Boat Safari Salary Calculator';
+            cardSubtitle.textContent = 'Calculate and manage staff salaries for boat safari operations';
+        } else if (tabId === 'auditTab') {
+            cardTitle.textContent = 'Salary Audit Log';
+            cardSubtitle.textContent = 'View audit history for salary payments';
+        }
+    }
+
+    // Salary Calculator Script
+    async function fetchSalaryDetails() {
+        const staffId = document.getElementById('salaryStaffId').value;
+        const adminId = document.getElementById('salaryAdminId').value;
+        const periodMonth = document.getElementById('periodMonth').value;
+
+        document.getElementById('salaryResult').style.display = 'none';
+        document.getElementById('salaryError').style.display = 'none';
+
+        if (staffId && adminId && periodMonth) {
+            document.getElementById('salaryLoader').style.display = 'block';
+            const currentYear = new Date().getFullYear();
+            const url = `/api/salaries/preview/${staffId}?adminId=${adminId}&periodMonth=${periodMonth}&periodYear=${currentYear}`;
+            try {
+                const response = await fetch(url, { method: 'GET' });
+                if (response.ok) {
+                    const data = await response.json();
+                    const finalAmount = (data.baseSalary || 0) + (data.tripIncentives || 0) + (data.allowances || 0) - (data.deductions || 0);
+
+                    document.getElementById('salaryResult').innerHTML = `
+                        <h3>Salary Preview for ${data.staffName || 'Staff'}</h3>
+                        <div class="final-amount">$${finalAmount.toFixed(2)}</div>
+                        <div class="salary-breakdown">
+                            <h4>Calculation Breakdown</h4>
+                            <div class="breakdown-item">
+                                <span>Base Salary:</span>
+                                <span>$${data.baseSalary?.toFixed(2) || '0.00'}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Trip Incentives:</span>
+                                <span>$${data.tripIncentives?.toFixed(2) || '0.00'}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Allowances:</span>
+                                <span>$${data.allowances?.toFixed(2) || '0.00'}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Deductions:</span>
+                                <span>$${data.deductions?.toFixed(2) || '0.00'}</span>
+                            </div>
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Salary ID</div>
+                                <div class="detail-value">${data.salaryId || 'N/A'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Staff Name</div>
+                                <div class="detail-value">${data.staffName || 'N/A'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Role</div>
+                                <div class="detail-value">${data.staffRole || 'N/A'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Payment Date</div>
+                                <div class="detail-value">${new Date(data.paymentDate).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Period</div>
+                                <div class="detail-value">${getMonthName(periodMonth)} ${currentYear}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Trip Count</div>
+                                <div class="detail-value">${data.tripCount || 0}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Approved Leaves</div>
+                                <div class="detail-value">${data.approvedLeaves || 0} days</div>
+                            </div>
+                        </div>
+                        ${data.notes ? `
+                            <div class="detail-item" style="grid-column: 1 / -1; margin-top: 15px;">
+                                <div class="detail-label">Notes</div>
+                                <div class="detail-value">${data.notes}</div>
+                            </div>
+                        ` : ''}
+                        <div class="print-section">
+                            <button type="button" class="btn btn-print" onclick="printSalaryAsPDF()">
+                                <span class="print-icon">🖨️</span>
+                                Print as PDF
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('salaryResult').style.display = 'block';
+                    document.getElementById('salaryError').style.display = 'none';
+                } else {
+                    document.getElementById('salaryError').textContent = 'Error: Calculation failed. Please check the inputs and try again.';
+                    document.getElementById('salaryError').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('salaryError').textContent = `Error: ${error.message}`;
+                document.getElementById('salaryError').style.display = 'block';
+            } finally {
+                document.getElementById('salaryLoader').style.display = 'none';
+            }
+        } else {
+            document.getElementById('salaryLoader').style.display = 'none';
+        }
+    }
+
+    document.getElementById('salaryForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const staffId = document.getElementById('salaryStaffId').value;
+        const adminId = document.getElementById('salaryAdminId').value;
+        const periodMonth = document.getElementById('periodMonth').value;
+
+        if (!staffId || !adminId || !periodMonth) {
+            document.getElementById('salaryError').textContent = 'Please fill in all required fields';
+            document.getElementById('salaryError').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('salaryLoader').style.display = 'block';
+        const currentYear = new Date().getFullYear();
+        const url = `/api/salaries/calculate/${staffId}?adminId=${adminId}&periodMonth=${periodMonth}&periodYear=${currentYear}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    periodMonth: periodMonth,
+                    periodYear: currentYear
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert('Salary saved successfully!');
+                fetchSalaryDetails();
+            } else {
+                document.getElementById('salaryError').textContent = 'Error: Failed to save salary. Please try again.';
+                document.getElementById('salaryError').style.display = 'block';
+            }
+        } catch (error) {
+            document.getElementById('salaryError').textContent = `Error: ${error.message}`;
+            document.getElementById('salaryError').style.display = 'block';
+        } finally {
+            document.getElementById('salaryLoader').style.display = 'none';
+        }
+    });
+
+    document.getElementById('periodMonth').addEventListener('change', fetchSalaryDetails);
+    document.getElementById('salaryAdminId').addEventListener('input', fetchSalaryDetails);
+
+    // Salary Audit Script
+    document.getElementById('auditFilterForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const salaryId = document.getElementById('auditSalaryId').value;
+        const adminId = document.getElementById('auditAdminId').value;
+
+        if (!adminId) {
+            document.getElementById('auditError').textContent = 'Please enter a valid Admin ID';
+            document.getElementById('auditError').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('auditLoader').style.display = 'block';
+        const url = salaryId
+            ? `/api/salary-audits/${salaryId}?adminId=${adminId}`
+            : `/api/salary-audits?adminId=${adminId}`;
+
+        try {
+            const response = await fetch(url, { method: 'GET' });
+            if (response.ok) {
+                const audits = await response.json();
+                const auditHtml = audits.length > 0 ? audits.map(audit => `
+                    <div class="audit-item">
+                        <div class="audit-actions">
+                            <button class="btn btn-danger btn-small" onclick="showDeleteModal(${audit.auditId})">Delete</button>
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Audit ID</div>
+                                <div class="detail-value">${audit.auditId}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Salary ID</div>
+                                <div class="detail-value">${audit.salaryId}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Action Type</div>
+                                <div class="detail-value">${audit.actionType}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Action Date</div>
+                                <div class="detail-value">${new Date(audit.actionDate).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Performed By</div>
+                                <div class="detail-value">${audit.performedByName || audit.performedBy}</div>
+                            </div>
+                            <div class="detail-item" style="grid-column: 1 / -1;">
+                                <div class="detail-label">Changes</div>
+                                <div class="detail-value">${audit.changes || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') : '<p>No audit logs found.</p>';
+
+                document.getElementById('auditResult').innerHTML = `
+                    <h3>Audit Logs</h3>
+                    ${auditHtml}
+                `;
+                document.getElementById('auditResult').style.display = 'block';
+                document.getElementById('auditError').style.display = 'none';
+            } else {
+                document.getElementById('auditError').textContent = 'Error: Failed to fetch audit logs. Please try again.';
+                document.getElementById('auditError').style.display = 'block';
+            }
+        } catch (error) {
+            document.getElementById('auditError').textContent = `Error: ${error.message}`;
+            document.getElementById('auditError').style.display = 'block';
+        } finally {
+            document.getElementById('auditLoader').style.display = 'none';
+        }
+    });
+
+    // DELETE FUNCTIONALITY - Added this clear form for deleting audit records
+    document.getElementById('deleteAuditForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const auditId = document.getElementById('deleteAuditId').value;
+        const adminId = document.getElementById('deleteAdminId').value;
+
+        if (!auditId || !adminId) {
+            alert('Please enter both Audit ID and Admin ID');
+            return;
+        }
+
+        showDeleteModal(auditId);
+    });
+
+    // Delete functionality
+    function showDeleteModal(auditId) {
+        currentAuditIdToDelete = auditId;
+        document.getElementById('deleteAuditIdDisplay').textContent = auditId;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+        document.getElementById('deleteModal').style.display = 'none';
+        currentAuditIdToDelete = null;
+    });
+
+    document.getElementById('confirmDelete').addEventListener('click', async () => {
+        if (!currentAuditIdToDelete) return;
+
+        const adminId = document.getElementById('deleteAdminId').value;
+        if (!adminId) {
+            alert('Admin ID is required for deletion');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/salary-audits/${currentAuditIdToDelete}?adminId=${adminId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Audit record deleted successfully!');
+                document.getElementById('deleteModal').style.display = 'none';
+                // Clear the delete form
+                document.getElementById('deleteAuditForm').reset();
+                // Refresh the audit logs if they're visible
+                if (document.getElementById('auditResult').style.display === 'block') {
+                    document.getElementById('auditFilterForm').dispatchEvent(new Event('submit'));
+                }
+            } else {
+                alert('Failed to delete audit record. Please try again.');
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+
+        currentAuditIdToDelete = null;
+    });
+
+    // PDF Generation Function
+    function printSalaryAsPDF() {
+        const salaryResult = document.getElementById('salaryResult');
+        if (!salaryResult || salaryResult.style.display === 'none') {
+            alert('No salary data to print. Please generate a salary preview first.');
+            return;
+        }
+
+        // Create a printable version
+        const printContent = salaryResult.cloneNode(true);
+        printContent.classList.add('printable-content');
+        
+        // Remove the print button from the printable version
+        const printSection = printContent.querySelector('.print-section');
+        if (printSection) {
+            printSection.remove();
+        }
+
+        // Create a new window for printing
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Boat Safari Salary Report</title>
+                <style>
+                    body {
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        line-height: 1.6;
+                        color: #212529;
+                        background: white;
+                        margin: 0;
+                        padding: 20px;
+                    }
+                    .salary-report {
+                        max-width: 800px;
+                        margin: 0 auto;
+                        background: white;
+                        border: 2px solid #4361ee;
+                        border-radius: 8px;
+                        padding: 30px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    }
+                    .report-header {
+                        text-align: center;
+                        border-bottom: 3px solid #4361ee;
+                        padding-bottom: 20px;
+                        margin-bottom: 30px;
+                    }
+                    .report-title {
+                        font-size: 28px;
+                        font-weight: bold;
+                        color: #4361ee;
+                        margin-bottom: 10px;
+                    }
+                    .report-subtitle {
+                        font-size: 16px;
+                        color: #6c757d;
+                    }
+                    .final-amount {
+                        font-size: 36px;
+                        font-weight: bold;
+                        color: #28a745;
+                        text-align: center;
+                        margin: 20px 0;
+                        padding: 20px;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        border: 2px solid #28a745;
+                    }
+                    .salary-breakdown {
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                        padding: 20px;
+                        margin: 20px 0;
+                    }
+                    .salary-breakdown h4 {
+                        color: #4361ee;
+                        margin-bottom: 15px;
+                        font-size: 18px;
+                    }
+                    .breakdown-item {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 8px 0;
+                        border-bottom: 1px solid #dee2e6;
+                    }
+                    .breakdown-item:last-child {
+                        border-bottom: none;
+                    }
+                    .details-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                        gap: 15px;
+                        margin: 20px 0;
+                    }
+                    .detail-item {
+                        background: #f8f9fa;
+                        padding: 15px;
+                        border-radius: 8px;
+                        border-left: 4px solid #4361ee;
+                    }
+                    .detail-label {
+                        font-weight: bold;
+                        color: #4361ee;
+                        font-size: 14px;
+                        margin-bottom: 5px;
+                    }
+                    .detail-value {
+                        color: #212529;
+                        font-size: 16px;
+                    }
+                    .report-footer {
+                        margin-top: 30px;
+                        padding-top: 20px;
+                        border-top: 2px solid #dee2e6;
+                        text-align: center;
+                        color: #6c757d;
+                        font-size: 14px;
+                    }
+                    @media print {
+                        body { margin: 0; padding: 10px; }
+                        .salary-report { border: none; box-shadow: none; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="salary-report">
+                    <div class="report-header">
+                        <div class="report-title">Boat Safari Salary Report</div>
+                        <div class="report-subtitle">Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</div>
+                    </div>
+                    ${printContent.innerHTML}
+                    <div class="report-footer">
+                        <p>This is a computer-generated salary report from the Boat Safari Salary Management System.</p>
+                        <p>Report ID: ${Date.now()}</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        
+        // Wait for content to load, then print
+        printWindow.onload = function() {
+            setTimeout(() => {
+                printWindow.print();
+                // Close the window after printing (optional)
+                // printWindow.close();
+            }, 500);
+        };
+    }
+</script>
+</body>
+</html>
