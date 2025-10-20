@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:time="http://www.thymeleaf.org/extras/java8time">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>All Bookings</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <script th:src="@{/js/sortTable.js}" defer></script>
+    <script th:src="@{/js/rowClick.js}" defer></script>
+    <script th:src="@{/js/clock.js}" defer></script>
+</head>
+<body>
+<!-- Header with navigation and clock -->
+<header class="page-header">
+    <nav class="nav a">
+        <ul class="nav-list">
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/showAllBookings}" class="active">All Bookings</a></li>
+            <li><a th:href="@{/new}">New Booking</a></li>
+            <li><a th:href="@{/staff}">Staff</a></li>
+            <li><a th:href="@{/boats}">Boats</a></li>
+        </ul>
+    </nav>
+    <div class="page-info">
+        <h1>All Bookings</h1>
+        <div id="currentDateTime" class="clock">Loading time…</div>
+    </div>
+</header>
+
+
+<!-- Main content area -->
+<main class="container">
+    <div class="summaries">
+        <div class="summary-card">
+            <h2>Today's Bookings</h2>
+            <p th:text="${todayBookingCount}">0</p>
+        </div>
+        <div class="summary-card">
+            <h2>Unassigned Bookings</h2>
+            <p th:text="${unassignedCount}">0</p>
+        </div>
+    </div>
+
+
+
+
+    <div class="table-container">
+        <table class="data-table sortable-table" data-clickable>
+            <thead>
+            <tr>
+                <th class="sortable">Booking ID</th>
+                <th class="sortable">Customer ID</th>
+                <th class="sortable">Trip ID</th>
+                <th class="sortable">Booking Time</th>
+                <th class="sortable">Guests</th>
+                <th class="sortable">Total Cost</th>
+                <th class="sortable">Status</th>
+                <th class="sortable">Guide Name</th>
+                <th class="sortable">Driver Name</th>
+                <th class="sortable">Boat Name</th>
+                <th class="sortable">Special Requests</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="b : ${bookingDetails}"
+                th:attr="data-href=@{/{id}/assignStaff(id=${b.bookingId})}">
+                <td th:text="${b.bookingId}">1</td>
+                <td th:text="${b.customerId}">200</td>
+                <td th:text="${b.tripName}">300</td>
+                <td th:text="${#temporals.format(b.bookingDate, 'yyyy-MM-dd HH:mm')}">2025-09-28 11:00</td>
+                <td th:text="${b.numOfGuests}">4</td>
+                <td th:text="${b.totalPrice}">250.00</td>
+                <td th:text="${b.status}" th:classappend="'status-' + ${b.status.toLowerCase()}">Pending</td>
+                <td th:text="${b.guideName}">None</td>
+                <td th:text="${b.driverName}">None</td>
+                <td th:text="${b.boatName}">None</td>
+                <td th:text="${b.specialRequests}">None</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
