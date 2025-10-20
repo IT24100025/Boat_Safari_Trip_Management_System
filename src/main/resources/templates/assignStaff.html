@@ -13,6 +13,15 @@
             Assign Staff &amp; Boat<br />
             Booking # <span th:text="${booking.bookingId}">ID</span>
         </h2>
+        <!-- Error Message -->
+        <div th:if="${error}" class="alert alert-error" style="margin-bottom: 1rem;">
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Success Message -->
+        <div th:if="${success}" class="alert alert-success" style="margin-bottom: 1rem;">
+            <span th:text="${success}"></span>
+        </div>
 
         <form th:action="@{'/' + ${booking.bookingId} + '/assignStaff'}" method="post">
 

@@ -14,11 +14,9 @@
 <header class="page-header">
     <nav class="nav a">
         <ul class="nav-list">
-            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/showAllBookings}" class="active">All Bookings</a></li>
-            <li><a th:href="@{/new}">New Booking</a></li>
             <li><a th:href="@{/staff}">Staff</a></li>
-            <li><a th:href="@{/boats}">Boats</a></li>
         </ul>
     </nav>
     <div class="page-info">
@@ -26,7 +24,6 @@
         <div id="currentDateTime" class="clock">Loading time…</div>
     </div>
 </header>
-
 
 <!-- Main content area -->
 <main class="container">
@@ -40,9 +37,6 @@
             <p th:text="${unassignedCount}">0</p>
         </div>
     </div>
-
-
-
 
     <div class="table-container">
         <table class="data-table sortable-table" data-clickable>

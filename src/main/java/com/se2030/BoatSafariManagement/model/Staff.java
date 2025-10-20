@@ -43,4 +43,7 @@ public class Staff {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+    public String getName() {
+        return this.firstName + " " + this.lastName;
+    }
 }

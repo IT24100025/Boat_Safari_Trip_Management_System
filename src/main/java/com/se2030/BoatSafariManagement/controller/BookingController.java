@@ -29,7 +29,7 @@ public class BookingController {
 
     @GetMapping("/")
     public String index(Model model) {
-        return "index";
+        return "customer-index";
     }
 
     @PostMapping("/api/book-trip")

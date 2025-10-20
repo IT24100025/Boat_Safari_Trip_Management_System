@@ -3,7 +3,7 @@ package com.se2030.BoatSafariManagement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class EmailService {
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
     @Autowired
-    private JavaMailSender mailSender;
+    private MailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String fromEmail;

@@ -17,7 +17,12 @@ public class Booking {
     private Integer assignedStaffId;
     private Integer assignedBoatId;
 
-    // Getters and Setters
+    // ADDED FROM STAFF_ASSIGNMENT BRANCH
+    private Integer guideId;         // staff.Role = 'Guide'
+    private Integer driverId;        // staff.Role = 'Driver'
+    private Integer boatId;          // BoatId (note: lowercase 'b' for consistency)
+
+    // Getters and Setters - ORIGINAL FROM MERGED BRANCH
     public Integer getBookingId() { return bookingId; }
     public void setBookingId(Integer bookingId) { this.bookingId = bookingId; }
 
@@ -50,4 +55,29 @@ public class Booking {
 
     public Integer getAssignedBoatId() { return assignedBoatId; }
     public void setAssignedBoatId(Integer assignedBoatId) { this.assignedBoatId = assignedBoatId; }
+
+    // ADDED GETTERS AND SETTERS FROM STAFF_ASSIGNMENT BRANCH
+    public Integer getGuideId() { return guideId; }
+    public void setGuideId(Integer guideId) { this.guideId = guideId; }
+
+    public Integer getDriverId() { return driverId; }
+    public void setDriverId(Integer driverId) { this.driverId = driverId; }
+
+    public Integer getBoatId() { return boatId; }
+    public void setBoatId(Integer boatId) { this.boatId = boatId; }
+
+    // Helper methods for compatibility
+    /**
+     * Gets customer ID from Customer object (for Staff_Assignment compatibility)
+     */
+    public Integer getCustomerId() {
+        return customer != null ? customer.getUserId() : null;
+    }
+
+    /**
+     * Gets trip ID from Trip object (for Staff_Assignment compatibility)
+     */
+    public Integer getTripId() {
+        return trip != null ? trip.getTripId() : null;
+    }
 }

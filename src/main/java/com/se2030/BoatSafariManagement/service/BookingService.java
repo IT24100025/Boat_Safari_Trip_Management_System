@@ -1,12 +1,19 @@
 package com.se2030.BoatSafariManagement.service;
 
+import com.se2030.BoatSafariManagement.model.Boat;
 import com.se2030.BoatSafariManagement.model.Booking;
+import com.se2030.BoatSafariManagement.model.BookingDetails;
 import com.se2030.BoatSafariManagement.model.Customer;
 import com.se2030.BoatSafariManagement.model.Payment;
+import com.se2030.BoatSafariManagement.model.Staff;
 import com.se2030.BoatSafariManagement.model.Trip;
+import com.se2030.BoatSafariManagement.model.BookingDetails;
 import com.se2030.BoatSafariManagement.repository.BookingJDBCRepository;
-import lombok.RequiredArgsConstructor;
+import com.se2030.BoatSafariManagement.repository.BookingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,10 +28,186 @@ import java.util.Optional;
 public class BookingService {
 
     private final BookingJDBCRepository bookingRepository;
+    private final BookingRepository staffAssignmentRepository;
+    private final EmailService emailService;
+    private final JdbcTemplate jdbc;
 
-    public BookingService(BookingJDBCRepository bookingRepository) {
+    @Autowired
+    public BookingService(BookingJDBCRepository bookingRepository,
+                          BookingRepository staffAssignmentRepository,
+                          EmailService emailService,
+                          JdbcTemplate jdbcTemplate) {
         this.bookingRepository = bookingRepository;
+        this.staffAssignmentRepository = staffAssignmentRepository;
+        this.emailService = emailService;
+        this.jdbc = jdbcTemplate;
     }
+
+    // ========== DEBUG METHOD ==========
+    public void debugBookingAssignment(int bookingId) {
+        System.out.println("=== DEBUG BOOKING ASSIGNMENT ===");
+        try {
+            Booking booking = getBooking(bookingId);
+            System.out.println("Booking: " + (booking != null ? "FOUND" : "NULL"));
+
+            if (booking != null) {
+                System.out.println("Booking ID: " + booking.getBookingId());
+                System.out.println("Status: " + booking.getStatus());
+                System.out.println("Current Guide: " + booking.getGuideId());
+                System.out.println("Current Driver: " + booking.getDriverId());
+                System.out.println("Current Boat: " + booking.getBoatId());
+                System.out.println("Customer: " + (booking.getCustomer() != null ?
+                        booking.getCustomer().getFirstName() + " " + booking.getCustomer().getLastName() : "NULL"));
+                System.out.println("Trip: " + (booking.getTrip() != null ?
+                        booking.getTrip().getTripName() : "NULL"));
+            } else {
+                System.out.println("❌ ERROR: Booking with ID " + bookingId + " not found!");
+            }
+
+            List<Staff> guides = getGuides("Guide");
+            List<Staff> drivers = getDrivers("Driver");
+            List<Boat> boats = getAvailableBoats();
+
+            System.out.println("Available Guides: " + guides.size());
+            if (guides.isEmpty()) {
+                System.out.println("  ❌ No guides available!");
+            } else {
+                guides.forEach(g -> System.out.println("  - " + g.getFirstName() + " " + g.getLastName() + " (ID: " + g.getStaffId() + ")"));
+            }
+
+            System.out.println("Available Drivers: " + drivers.size());
+            if (drivers.isEmpty()) {
+                System.out.println("  ❌ No drivers available!");
+            } else {
+                drivers.forEach(d -> System.out.println("  - " + d.getFirstName() + " " + d.getLastName() + " (ID: " + d.getStaffId() + ")"));
+            }
+
+            System.out.println("Available Boats: " + boats.size());
+            if (boats.isEmpty()) {
+                System.out.println("  ❌ No boats available!");
+            } else {
+                boats.forEach(b -> System.out.println("  - " + b.getBoatName() + " (ID: " + b.getBoatId() + ")"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Debug error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("=== END DEBUG ===");
+    }
+
+    // ========== METHODS FROM STAFF_ASSIGNMENT BRANCH ==========
+
+    public Booking getBooking(int id) {
+        return staffAssignmentRepository.getBooking(id);
+    }
+
+    public List<Boat> getAvailableBoats() {
+        return staffAssignmentRepository.getAvailableBoats();
+    }
+
+    public void assignBoat(int bookingId, int boatId) {
+        staffAssignmentRepository.assignBoatToBooking(bookingId, boatId);
+    }
+
+    public List<Staff> getGuides(String guide) {
+        return staffAssignmentRepository.getStaffByRole("Guide");
+    }
+
+    public List<Staff> getDrivers(String driver) {
+        return staffAssignmentRepository.getStaffByRole("Driver");
+    }
+
+    @Transactional
+    public void assignStaff(int bookingId, int guideId, int driverId, int boatId) {
+        try {
+            System.out.println("=== STARTING STAFF ASSIGNMENT ===");
+            System.out.println("Booking ID: " + bookingId + ", Guide ID: " + guideId + ", Driver ID: " + driverId + ", Boat ID: " + boatId);
+
+            // Get current booking to check if staff are already assigned
+            Booking currentBooking = staffAssignmentRepository.getBooking(bookingId);
+            if (currentBooking == null) {
+                throw new RuntimeException("Booking not found with ID: " + bookingId);
+            }
+
+            // Update guide, driver, and boat in a single query
+            String sql = "UPDATE Booking SET GuideId = ?, DriverId = ?, BoatId = ?, Status = 'Confirmed' WHERE BookingId = ?";
+            int rowsUpdated = jdbc.update(sql, guideId, driverId, boatId, bookingId);
+            System.out.println("Rows updated in database: " + rowsUpdated);
+
+            if (rowsUpdated == 0) {
+                throw new RuntimeException("No rows updated - booking may not exist");
+            }
+
+            // Update availability
+            updateAvailability(guideId, driverId, boatId);
+
+            // Get trip details for email
+            String tripDetails = getTripDetails(bookingId);
+
+            // Send email to guide if newly assigned
+            if (currentBooking.getGuideId() == null || !currentBooking.getGuideId().equals(guideId)) {
+                sendStaffNotification(guideId, "Guide", bookingId, tripDetails);
+            }
+
+            // Send email to driver if newly assigned
+            if (currentBooking.getDriverId() == null || !currentBooking.getDriverId().equals(driverId)) {
+                sendStaffNotification(driverId, "Driver", bookingId, tripDetails);
+            }
+
+            System.out.println("✅ Staff assignment completed successfully!");
+
+        } catch (Exception e) {
+            System.out.println("❌ Error in assignStaff: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to assign staff: " + e.getMessage(), e);
+        }
+    }
+
+    private String getTripDetails(int bookingId) {
+        return staffAssignmentRepository.getTripDetails(bookingId);
+    }
+
+    private void sendStaffNotification(int staffId, String role, int bookingId, String tripDetails) {
+        try {
+            Staff staffInfo = staffAssignmentRepository.getStaffEmailAndName(staffId);
+            String email = staffInfo.getEmail();
+            String staffName = staffInfo.getFullName();
+
+            if (email != null && !email.trim().isEmpty()) {
+                emailService.sendAssignmentNotification(email, staffName, role, bookingId, tripDetails);
+                System.out.println("📧 Notification sent to " + role + ": " + email);
+            } else {
+                System.out.println("⚠️ No email found for " + role + " ID: " + staffId);
+            }
+        } catch (Exception e) {
+            // Log error but don't break the assignment process
+            System.err.println("Failed to send notification to staff " + staffId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBookingStatus(int bookingId) {
+        staffAssignmentRepository.updateBookingStatus(bookingId);
+    }
+
+    public List<BookingDetails> getAllBookings() {
+        return staffAssignmentRepository.getAllBookings();
+    }
+
+    public void updateAvailability(int guideId, int driverId, int boatID){
+        staffAssignmentRepository.updateAvailability(guideId, driverId, boatID);
+    }
+
+    public int getTodayBookingCount(){
+        return staffAssignmentRepository.getTodayBookingCount();
+    }
+
+    public int getUnassignedBookingCount(){
+        return staffAssignmentRepository.getUnassignedBookingCount();
+    }
+
+    // ========== METHODS FROM MERGED BRANCH (ORIGINAL) ==========
 
     public Trip findAvailableTrip(String tripName, LocalDate date, LocalTime time, List<String> destinations) {
         System.out.println("=== DEBUG: FINDING AVAILABLE TRIP ===");

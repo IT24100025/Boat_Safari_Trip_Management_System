@@ -6,6 +6,8 @@ package com.se2030.BoatSafariManagement.model;
 //import com.boatsafarimanagement.model.User;
 //import com.boatsafarimanagement.model.Trip;
 
+import org.springframework.data.relational.core.sql.In;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,11 +18,11 @@ public class BookingDetails {
 //    private User user;
 //    private Trip trip;
 
-    private int bookingId;
-    private int customerId;
+    private Integer bookingId;
+    private Integer customerId;
     private String tripName;
     private LocalDateTime bookingDate;
-    private int numOfGuests;
+    private Integer numOfGuests;
     private BigDecimal totalPrice;
     private String status;
     private String guideName;
@@ -29,16 +31,16 @@ public class BookingDetails {
     private String specialRequests;
 
     // Getters and Setters
-    public int getBookingId() {
+    public Integer getBookingId() {
         return bookingId;
     }
-    public void setBookingId(int bookingId) {
+    public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
     }
-    public int getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
     public String getTripName() {
@@ -53,10 +55,10 @@ public class BookingDetails {
     public void setBookingDate(LocalDateTime bookingDate) {
         this.bookingDate = bookingDate;
     }
-    public int getNumOfGuests() {
+    public Integer getNumOfGuests() {
         return numOfGuests;
     }
-    public void setNumOfGuests(int numOfGuests) {
+    public void setNumOfGuests(Integer numOfGuests) {
         this.numOfGuests = numOfGuests;
     }
     public BigDecimal getTotalPrice() {
