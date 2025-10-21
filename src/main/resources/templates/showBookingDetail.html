@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<main>
+    <div class="details-wrapper">
+        <section class="details-card">
+            <h2>Booking Details #<span th:text="${booking.bookingId}">[BookingId]</span></h2>
+            <ul class="details-list">
+                <li><strong>Customer ID:</strong> <span th:text="${booking.customerId}">-</span></li>
+                <li><strong>Trip ID:</strong> <span th:text="${booking.tripId}">-</span></li>
+                <li><strong>Guide:</strong> <span th:text="${booking.guideId != null ? booking.guideId : 'Not assigned'}">-</span></li>
+                <li><strong>Driver:</strong> <span th:text="${booking.driverId != null ? booking.driverId : 'Not assigned'}">-</span></li>
+                <li><strong>Boat:</strong> <span th:text="${booking.boatId != null ? booking.boatId : 'Not assigned'}">-</span></li>
+                <li><strong>Status:</strong> <span th:text="${booking.status}" th:classappend="' status-' + ${booking.status.toLowerCase()}">Pending</span></li>
+                <li><strong>Special Requests:</strong> <span th:text="${booking.specialRequests != null ? booking.specialRequests : 'None'}">None</span></li>
+            </ul>
+
+            <a th:href="@{/showAllBookings}" class="back-link">← Back to Bookings</a>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>

@@ -16,7 +16,8 @@
                 <li><a href="/feedback">Feedback</a></li>
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/trips">Trips</a></li>
+                <li><a href="/trip-schedule">Trip Schedule</a></li>
+                <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
         </nav>
@@ -24,9 +25,10 @@
 </header>
 
 <main>
-    <h2>Payment Records 💳</h2>
-    <p>All customer payments and transaction history.</p>
+    <h2>Payment Records 💰</h2>
+    <p>View and monitor all payment transactions for boat safari bookings.</p>
 
+    <!-- Statistics for Payments -->
     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2rem;">
         <div class="stat-card">
             <h3>Total Payments</h3>
@@ -34,8 +36,7 @@
         </div>
         <div class="stat-card">
             <h3>Total Revenue</h3>
-            <!-- FIXED: Simple approach -->
-            <p>$<span th:text="${#numbers.formatDecimal(totalAmount, 1, 2)}">0.00</span></p>
+            <p th:text="'$' + ${#numbers.formatDecimal(totalAmount, 1, 2)}">$0.00</p>
         </div>
         <div class="stat-card">
             <h3>Successful</h3>
@@ -47,6 +48,7 @@
         </div>
     </div>
 
+    <!-- Payments Table -->
     <table class="data-table">
         <thead>
         <tr>
@@ -62,23 +64,20 @@
         <tbody>
         <tr th:each="payment : ${payments}">
             <td th:text="${payment.paymentId}">1</td>
-            <td th:text="${payment.bookingId}">201</td>
-            <td>$<span th:text="${#numbers.formatDecimal(payment.amount, 1, 2)}">150.00</span></td>
-            <td th:text="${#temporals.format(payment.paymentDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 09:30</td>
+            <td th:text="${payment.bookingId}">101</td>
+            <td th:text="'$' + ${#numbers.formatDecimal(payment.amount, 1, 2)}">$150.00</td>
+            <td th:text="${#temporals.format(payment.paymentDate, 'yyyy-MM-dd HH:mm')}">2024-05-01 14:30</td>
             <td th:text="${payment.paymentMethod}">Credit Card</td>
             <td>
                 <span th:if="${payment.status == 'Successful'}" class="status-completed">Successful</span>
                 <span th:if="${payment.status == 'Pending'}" class="status-pending">Pending</span>
                 <span th:if="${payment.status == 'Failed'}" class="status-cancelled">Failed</span>
-                <span th:if="${payment.status == 'Refunded'}" style="color: #8b5cf6; font-weight: 600;">Refunded</span>
             </td>
-            <td>
-                <code th:text="${payment.transactionId ?: 'N/A'}" style="font-family: monospace; font-size: 0.85rem;"></code>
-            </td>
+            <td th:text="${payment.transactionId}">TXN123456</td>
         </tr>
         <tr th:if="${payments.empty}">
             <td colspan="7" style="text-align: center; padding: 3rem; color: var(--light-text);">
-                <div style="font-size: 1.5rem; margin-bottom: 1rem;">💳</div>
+                <div style="font-size: 1.5rem; margin-bottom: 1rem;">💰</div>
                 <h3>No Payment Records</h3>
                 <p>Payment records will appear here once customers make bookings and payments.</p>
             </td>

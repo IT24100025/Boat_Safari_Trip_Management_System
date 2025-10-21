@@ -16,7 +16,7 @@
                 <li><a href="/feedback">Feedback</a></li>
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/trips">Trips</a></li>
+                <li><a href="/trip-schedule">Trip Schedule</a></li> <!-- UPDATED -->
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
@@ -60,7 +60,7 @@
         <h3 th:text="${reportTitle + ' Preview'}">Report Preview</h3>
         <p>Period: <span th:text="${startDate + ' to ' + endDate}"></span></p>
 
-        <!-- Export Button - SIMPLIFIED: Single CSV Export -->
+        <!-- Export Button -->
         <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
             <form th:action="@{/reports/export}" method="post" style="display: inline;">
                 <input type="hidden" name="reportType" th:value="${reportType}">

@@ -1,0 +1,5 @@
+Assign:
+    http://localhost:8080/bookings/*/assign
+
+View All:
+    http://localhost:8080/bookings/all

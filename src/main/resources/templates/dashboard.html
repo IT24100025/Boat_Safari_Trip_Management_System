@@ -12,12 +12,13 @@
         <nav>
             <ul>
                 <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/showAllBookings">Assign Staff</a></li> <!-- ADDED: Assign Staff in navigation -->
                 <li><a href="/staff">Staff</a></li>
                 <li><a href="/feedback">Feedback</a></li>
                 <li><a href="/payments">Payments</a></li>
                 <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/trips">Trips</a></li>
-                <li><a href="/reports">Reports</a></li> <!-- ADDED REPORTS LINK -->
+                <li><a href="/trip-schedule">Trip Schedule</a></li>
+                <li><a href="/reports">Reports</a></li>
                 <li><a href="/logout" class="btn btn-outline" style="color:white; padding:0.3rem 0.8rem;">Logout</a></li>
             </ul>
         </nav>
@@ -55,22 +56,27 @@
         </div>
     </div>
 
+    <!-- Assign Staff Button in main content -->
     <div style="margin-top: 2rem; text-align: center;">
-        <a href="/staff" class="btn btn-primary">Manage Staff</a>
-        <a href="/trips" class="btn btn-secondary">Manage Trips</a>
+        <a href="/showAllBookings" class="btn btn-primary" style="margin-right: 1rem;">👥 Assign Staff</a>
+        <a href="/staff" class="btn btn-secondary">Manage Staff</a>
+        <a href="/trip-schedule" class="btn btn-secondary">Trip Schedule</a>
         <a href="/maintenance" class="btn btn-outline">View Maintenance</a>
         <a href="/payments" class="btn btn-success">Payment Records</a>
         <a href="/feedback" class="btn btn-primary">Customer Feedback</a>
-        <a href="/reports" class="btn btn-outline">Generate Reports</a> <!-- ADDED REPORTS BUTTON -->
+        <a href="/reports" class="btn btn-outline">Generate Reports</a>
     </div>
 
     <div style="margin-top: 3rem; background: var(--card-bg); padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         <h3>Quick Actions</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <a href="/staff" class="btn btn-outline" style="text-align: center; padding: 1rem;">
-                <strong>👥 Add Staff</strong>
+            <a href="/showAllBookings" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>👥 Assign Staff</strong>
             </a>
-            <a href="/trips" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+            <a href="/staff" class="btn btn-outline" style="text-align: center; padding: 1rem;">
+                <strong>➕ Add Staff</strong>
+            </a>
+            <a href="/trip-schedule/create" class="btn btn-outline" style="text-align: center; padding: 1rem;">
                 <strong>⛵ Schedule Trip</strong>
             </a>
             <a href="/maintenance" class="btn btn-outline" style="text-align: center; padding: 1rem;">
@@ -80,7 +86,7 @@
                 <strong>📝 Review Feedback</strong>
             </a>
             <a href="/reports" class="btn btn-outline" style="text-align: center; padding: 1rem;">
-                <strong>📊 Generate Reports</strong> <!-- ADDED REPORTS QUICK ACTION -->
+                <strong>📊 Generate Reports</strong>
             </a>
         </div>
     </div>
