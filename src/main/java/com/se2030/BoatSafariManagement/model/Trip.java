@@ -41,22 +41,41 @@ public class Trip {
     }
 
     // Getters and Setters for original fields
-    public Integer getTripId() { return tripId; }
-    public void setTripId(Integer tripId) { this.tripId = tripId; }
+    public Integer getTripId() {
+        return tripId;
+    }
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
 
-    public String getTripName() { return tripName; }
-    public void setTripName(String tripName) { this.tripName = tripName; }
+    public String getTripName() {
+        return tripName;
+    }
+    public void setTripName(String tripName) {
+        this.tripName = tripName;
+    }
 
-    public Integer getDuration() { return duration; }
-    public void setDuration(Integer duration) { this.duration = duration; }
+    public Integer getDuration() {
+        return duration;
+    }
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
 
-    public LocalDateTime getDepartureTime() { return departureTime; }
-    public void setDepartureTime(LocalDateTime departureTime) { this.departureTime = departureTime; }
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
+    public void setDepartureTime(LocalDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
 
-    public String getDestinations() { return destinations; }
-    public void setDestinations(String destinations) { this.destinations = destinations; }
+    public String getDestinations() {
+        return destinations;
+    }
+    public void setDestinations(String destinations) {
+        this.destinations = destinations;
+    }
 
-    // In your Trip model class
     //private String status;
 
     public String getStatus() {
@@ -67,30 +86,54 @@ public class Trip {
         this.status = status;
     }
 
-    public Integer getAvailability() { return availability; }
+    public Integer getAvailability() {
+        return availability;
+    }
     public void setAvailability(Integer availability) {
         this.availability = availability;
         // Update capacity warning and status when availability changes
         updateCapacityStatus();
     }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Double getBasePrice() { return basePrice; }
-    public void setBasePrice(Double basePrice) { this.basePrice = basePrice; }
+    public Double getBasePrice() {
+        return basePrice;
+    }
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
+    }
 
     // Getters and Setters for conflict detection fields
-    public boolean isHasConflict() { return hasConflict; }
-    public void setHasConflict(boolean hasConflict) { this.hasConflict = hasConflict; }
+    public boolean isHasConflict() {
+        return hasConflict;
+    }
+    public void setHasConflict(boolean hasConflict) {
+        this.hasConflict = hasConflict;
+    }
 
-    public String getConflictDetails() { return conflictDetails; }
-    public void setConflictDetails(String conflictDetails) { this.conflictDetails = conflictDetails; }
+    public String getConflictDetails() {
+        return conflictDetails;
+    }
+    public void setConflictDetails(String conflictDetails) {
+        this.conflictDetails = conflictDetails;
+    }
 
-    public boolean isCapacityWarning() { return capacityWarning; }
-    public void setCapacityWarning(boolean capacityWarning) { this.capacityWarning = capacityWarning; }
+    public boolean isCapacityWarning() {
+        return capacityWarning;
+    }
+    public void setCapacityWarning(boolean capacityWarning) {
+        this.capacityWarning = capacityWarning;
+    }
 
-    public String getCapacityStatus() { return capacityStatus; }
+    public String getCapacityStatus() {
+        return capacityStatus;
+    }
     public void setCapacityStatus(String capacityStatus) {
         this.capacityStatus = capacityStatus;
         // Update capacity warning based on status
